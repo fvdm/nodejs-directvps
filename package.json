@@ -1,0 +1,27 @@
+{
+  "author": "Franklin van de Meent <fr@nkl.in> (http://frankl.in)",
+  "name": "directvps",
+  "description": "Access the DireVPS API (http://directvps.nl)",
+  "version": "0.1.0",
+  "homepage": "https://github.com/fvdm/nodejs-mollie",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fvdm/nodejs-directvps.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fvdm/nodejs-directvps/issues"
+  },
+  "main": "directvps.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  },
+  "tags": [
+    "directvps",
+    "api",
+    "vps",
+    "servers"
+  ]
+}
