@@ -283,7 +283,7 @@ directvps.vps = function( vpsid ) {
 				// find actionid
 				for( var a in actions ) {
 					if( actions[a].omschrijving.toLowerCase() == nameid ) {
-						actionid =  = actions[a].actionid
+						actionid = actions[a].actionid
 					}
 				}
 				
