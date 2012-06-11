@@ -86,6 +86,7 @@ var directvps = require('directvps')
 directvps.vps(123).details( function( vps ) {
 	console.log( 'VPS '+ vps.vpsid +' allows '+ vps.traffic 'GB traffic' )
 })
+```
 
 ## License
 
