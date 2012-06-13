@@ -253,36 +253,74 @@ directvps.vps = function( vpsid ) {
 		},
 		
 		// Plan action
-		action: function( nameid, subkey, cb ) {
+		// action( nameid, cb )
+		// action( nameid, subval, cb )
+		// action( nameid, when, cb )
+		// action( nameid, cb, when )
+		action: function() {
 			
-			// subkey is optional
-			if( !cb ) {
-				var cb = subkey
-				var subkey = false
+			// prepare
+			var vars = { vpsid: vpsid }
+			
+			for( var a in arguments ) {
+				if( a == '0' ) {
+					var nameid = arguments[a] +''
+				} else if( typeof arguments[a] == 'function' ) {
+					var cb = arguments[a]
+				} else if( typeof arguments[a] == 'string' && arguments[a].match( /^[\d]{4}\-[\d]{2}\-[\d]{2} [\d]{2}:[\d]{2}$/ ) ) {
+					vars.when = arguments[a]
+				} else {
+					vars.sub = arguments[a]
+				}
 			}
 			
-			// label instead of id
-			if( typeof nameid == 'string' && !nameid.match( /^\d$/ ) ) {
+			// action referenced with name or ID
+			if( nameid.match( /^[\d]+$/ ) ) {
 				
-				// get all actions
+				// ID given
+				vars.actionid = nameid
+				directvps.add_action( vars, cb )
+				
+			} else {
+				
+				// name, get all actions
 				directvps.get_actionlist( function( actions ) {
 					for( var a in actions ) {
 						if( actions[a].omschrijving.toLowerCase() == nameid ) {
 							
 							// found the one
-							var actionid = actions[a].actionid
+							vars.actionid = actions[a].actionid
+							directvps.add_action( vars, cb )
+							break
 							
 						}
 					}
 				})
 				
-			} else {
-				
-				// ID given
-				var actionid = nameid
-				
 			}
 			
+		},
+		
+		// Get action status
+		actionStatus: function( actionRef, cb ) {
+			directvps.get_actionstatus(
+				{
+					vpsid: vpsid,
+					planningid: actionRef
+				},
+				function( res ) {
+					
+					var res = res[0]
+					switch( res.status ) {
+						case '0': res.label = 'planned'; break
+						case '1': res.label = 'running'; break
+						case '2': res.label = 'complete'; break
+					}
+					
+					cb( res )
+					
+				}
+			)
 		}
 		
 	}
