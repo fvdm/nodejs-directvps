@@ -190,7 +190,6 @@ directvps.edit_reverse = function( set, callback ) {
 	directvps.talk( 'POST', 'edit_reverse', set, callback )
 }
 
-
 // Create VPS
 directvps.add_vps = function( set, callback ) {
 	directvps.talk( 'POST', 'add_vps', set, callback )
@@ -198,29 +197,21 @@ directvps.add_vps = function( set, callback ) {
 
 // Traffic
 directvps.get_traffic = function( vpsid, callback ) {
-	directvps.talk(
-		'POST',
-		'get_traffic',
-		{
-			vpsid: vpsid
-		},
-		function( res ) {
-			var result = {}
-			if( res[0].error == '0' && res[0].traffic[0].jaar !== undefined ) {
-				for( var ti in res[0].traffic ) {
-					var t = res[0].traffic[ti]
-					if( result[ t.jaar ] === undefined ) {
-						result[ t.jaar ] = {}
-					}
-					result[ t.jaar ][ t.maand ] = t
+	directvps.talk( 'POST', 'get_traffic', { vpsid: vpsid }, function( res ) {
+		var result = {}
+		if( res[0].error == '0' && res[0].traffic[0].jaar !== undefined ) {
+			for( var ti in res[0].traffic ) {
+				var t = res[0].traffic[ti]
+				if( result[ t.jaar ] === undefined ) {
+					result[ t.jaar ] = {}
 				}
+				result[ t.jaar ][ t.maand ] = t
 			}
-			
-			callback( result )
 		}
-	);
+		
+		callback( result )
+	});
 }
-
 
 
 ///////////////
@@ -333,6 +324,9 @@ directvps.vps = function( vpsid ) {
 }
 
 
+//////////
+// CORE //
+//////////
 
 // API communication
 directvps.talk = function( type, path, fields, callback ) {
