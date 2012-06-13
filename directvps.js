@@ -335,7 +335,7 @@ directvps.talk = function( type, path, fields, callback ) {
 	// prepare
 	var headers = {
 		'Accept':			'application/json',
-		'User-Agent':		'directvps.js/0.1.0'
+		'User-Agent':		'directvps.js (https://github.com/fvdm/nodejs-directvps)'
 	}
 	
 	if( type == 'POST' ) {
