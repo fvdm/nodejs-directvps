@@ -388,21 +388,5 @@ directvps.talk = function( type, path, fields, callback ) {
 	
 }
 
-// add to cache
-directvps.setCache = function( key, subkey, value ) {
-	if( !value ) {
-		var value = subkey
-		var subkey = false
-	}
-	
-	if( directvps.settings.cache === true ) {
-		if( subkey ) {
-			directvps.cache[ key ][ subkey ] = value
-		} else {
-			directvps.cache[ key ] = value
-		}
-	}
-}
-
 // Ready
 module.exports = directvps
