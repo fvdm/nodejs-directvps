@@ -7,8 +7,7 @@ var	fs = require('fs'),
 var directvps = new EventEmitter()
 
 directvps.settings = {
-	apiVersion:	1,
-	cache:		true
+	apiVersion:	1
 }
 
 // Setup
@@ -32,8 +31,6 @@ directvps.setup = function( vars ) {
 	
 }
 
-directvps.cache = {}
-
 //////////////////////
 // Direct API calls //
 //////////////////////
@@ -46,7 +43,6 @@ directvps.get_productlist = function( callback ) {
 			var product = res[p]
 			products[ product.productid ] = product
 		}
-		directvps.setCache( 'productlist', products )
 		callback( products )
 	});
 }
@@ -59,7 +55,6 @@ directvps.get_imagelist = function( callback ) {
 			var image = res[i]
 			images[ image.imageid ] = image
 		}
-		directvps.setCache( 'imagelist', images )
 		callback( images )
 	})
 }
@@ -72,7 +67,6 @@ directvps.get_kernellist = function( callback ) {
 			var kernel = res[k]
 			kernels[ kernel.kernelid ] = kernel
 		}
-		directvps.setCache( 'kernellist', kernels )
 		callback( kernels )
 	})
 }
@@ -85,7 +79,6 @@ directvps.get_locationlist = function( callback ) {
 			var location = res[l]
 			locations[ location.locationid ] = location
 		}
-		directvps.setCache( 'locationlist', locations )
 		callback( locations )
 	})
 }
@@ -98,7 +91,6 @@ directvps.get_actionlist = function( callback ) {
 			var action = res[a]
 			actions[ action.actionid ] = action
 		}
-		directvps.setCache( 'actionlist', actions )
 		callback( actions )
 	})
 }
@@ -110,7 +102,6 @@ directvps.get_statuslist = function( callback ) {
 		for( var s in res ) {
 			statuses[ res[s].statusid ] = res[s]
 		}
-		directvps.setCache( 'statuslist', statuses )
 		callback( statuses )
 	})
 }
@@ -123,7 +114,6 @@ directvps.get_vpslist = function( callback ) {
 			var server = res[s]
 			servers[ server.vpsid ] = server
 		}
-		directvps.setCache( 'vpslist', servers )
 		callback( servers )
 	})
 }
@@ -135,7 +125,6 @@ directvps.get_backuplist = function( vpsid, callback ) {
 		for( var b in res[0].backup ) {
 			backups[ res[0].backup[b].backupid ] = res[0].backup[b]
 		}
-		directvps.setCache( 'backuplist', vpsid, backups )
 		callback( backups );
 	})
 }
@@ -266,26 +255,26 @@ directvps.vps = function( vpsid ) {
 		// Plan action
 		action: function( nameid, subkey, cb ) {
 			
-			var actionid = false
-			var actions = {}
 			
 			// label instead of id
 			if( typeof nameid == 'string' && !nameid.match( /^\d$/ ) ) {
 				
-				if( !directvps.settings.cache || directvps.cache.actionlist === undefined ) {
-					// fresh from the source
-					actions = directvps.get_actionlist()
-				} else {
-					// read from cache
-					actions = directvps.cache.actionlist
-				}
-				
-				// find actionid
-				for( var a in actions ) {
-					if( actions[a].omschrijving.toLowerCase() == nameid ) {
-						actionid = actions[a].actionid
+				// get all actions
+				directvps.get_actionlist( function( actions ) {
+					for( var a in actions ) {
+						if( actions[a].omschrijving.toLowerCase() == nameid ) {
+							
+							// found the one
+							var actionid = actions[a].actionid
+							
+						}
 					}
-				}
+				})
+				
+			} else {
+				
+				// ID given
+				var actionid = nameid
 				
 			}
 			
