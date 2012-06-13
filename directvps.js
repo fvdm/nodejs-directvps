@@ -255,6 +255,11 @@ directvps.vps = function( vpsid ) {
 		// Plan action
 		action: function( nameid, subkey, cb ) {
 			
+			// subkey is optional
+			if( !cb ) {
+				var cb = subkey
+				var subkey = false
+			}
 			
 			// label instead of id
 			if( typeof nameid == 'string' && !nameid.match( /^\d$/ ) ) {
