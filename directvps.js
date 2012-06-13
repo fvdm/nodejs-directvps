@@ -321,6 +321,11 @@ directvps.vps = function( vpsid ) {
 					
 				}
 			)
+		},
+		
+		// Backups
+		backups: function( cb ) {
+			directvps.get_backuplist( vpsid, cb )
 		}
 		
 	}
