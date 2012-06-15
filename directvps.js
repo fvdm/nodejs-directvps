@@ -398,7 +398,7 @@ directvps.talk = function( type, path, fields, callback ) {
 	
 	// error
 	req.on( 'error', function( error ) {
-		directvps.emit( 'error-talk', error, options, fields )
+		directvps.emit( 'fatal', error, options, fields )
 	})
 	
 	// post and close
