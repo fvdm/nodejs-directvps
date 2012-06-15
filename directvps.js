@@ -7,7 +7,8 @@ var	fs = require('fs'),
 var directvps = new EventEmitter()
 
 directvps.settings = {
-	apiVersion:	1
+	apiVersion:	1,
+	debug:		false
 }
 
 // Setup
@@ -28,6 +29,9 @@ directvps.setup = function( vars ) {
 	else if( vars.certificate ) {
 		directvps.settings.certificate = vars.certificate
 	}
+	
+	// set debug mode
+	directvps.settings.debug = vars.debug === true ? true : false
 	
 }
 
@@ -368,6 +372,25 @@ directvps.talk = function( type, path, fields, callback ) {
 			response.on( 'end', function() {
 				data = JSON.parse( data )
 				callback( data )
+				// emit debug data
+				if( directvps.settings.debug === true ) {
+					directvps.emit( 'debug', {
+						input: {
+							type:		type,
+							path:		path,
+							fields:		fields
+						},
+						request:	options,
+						response: {
+							length:		data.length,
+							statusCode:	response.statusCode,
+							httpVersion:	response.httpVersion,
+							headers:	response.headers,
+							body:		data
+						}
+					})
+				}
+				
 			})
 			
 		}

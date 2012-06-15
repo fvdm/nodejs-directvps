@@ -44,6 +44,8 @@ In order to use the API you need to have an API access private-key and certifica
 * **privateKeyFile** - Path to the private-key file, no combined PEM file.
 * **certificateFile** - Path to certificate file, no combined PEM file.
 
+* **debug** - Set debug mode (boolean). This will emit the *debug* event on all API communication. Default is *false* to save memory.
+
 ### Load from files
 
 This is the simple way, if you have access to a filesystem.
@@ -93,6 +95,56 @@ var directvps = require('directvps')
 directvps.vps(123).details( function( vps ) {
 	console.log( 'VPS '+ vps.vpsid +' allows '+ vps.traffic 'GB traffic' )
 })
+```
+
+## Events
+
+### debug
+
+There is a debug mode built in which allows you to monitor all API communication in detail. It returns *talk()* input parameters, request options and API response details.
+
+**WARNING:** the *request* element contains your *private-key* and *certificate*. Make sure the debug details do not end up in the wrong hands.
+
+```js
+directvps.on( 'debug', console.log )
+```
+
+```js
+{ input: 
+   { type: 'POST',
+     path: 'edit_reverse',
+     fields: 
+      { vpsid: 123,
+        ipv4: '178.21.12.34',
+        reverse: 'example.tld' } },
+  request: 
+   { host: 'api.directvps.nl',
+     port: 443,
+     path: '/1/edit_reverse',
+     method: 'POST',
+     headers: 
+      { Accept: 'application/json',
+        'User-Agent': 'directvps.js (https://github.com/fvdm/nodejs-directvps)',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': 116 },
+     key: '-----BEGIN RSA PRIVATE KEY-----',
+     cert: '-----BEGIN CERTIFICATE-----',
+     agent: false,
+     createConnection: [Function: createConnection],
+     defaultPort: 443,
+     setHost: true },
+  response: 
+   { length: 209,
+     statusCode: 200,
+     httpVersion: '1.1',
+     headers: 
+      { date: 'Fri, 15 Jun 2012 12:11:09 GMT',
+        server: 'Apache/2.2.16 (Debian)',
+        'x-plp-version': '3.23',
+        connection: 'close',
+        'transfer-encoding': 'chunked',
+        'content-type': 'application/json' },
+     body: '[..]' } }
 ```
 
 ## License
