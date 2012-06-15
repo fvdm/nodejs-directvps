@@ -321,6 +321,55 @@ directvps.vps = function( vpsid ) {
 		// Backups
 		backups: function( cb ) {
 			directvps.get_backuplist( vpsid, cb )
+		},
+		
+		// Get IPv4 address
+		ipv4: function( ip, cb ) {
+			
+			if( cb === undefined && typeof ip == 'function' ) {
+				
+				// list
+				var cb = ip
+				directvps.get_ipv4( vpsid, cb )
+				
+			} else if( ip && cb ) {
+				
+				// just one
+				directvps.vps( vpsid ).ipv4( ip ).details( cb )
+				
+			}
+			
+			return {
+				
+				// simple details
+				details: function( cb ) {
+					directvps.get_ipv4( vpsid, function( ips ) {
+						cb( ips[ ip ] )
+					})
+				},
+				
+				// get or set reverse
+				reverse: function( name, cb ) {
+					if( cb === undefined ) {
+						
+						// get
+						var cb = name
+						directvps.get_reverse({ vpsid: vpsid, ipv4: ip }, cb )
+						
+					} else {
+						
+						// set
+						directvps.edit_reverse({
+							vpsid:		vpsid,
+							ipv4:		ip,
+							reverse: 	name
+						}, cb )
+						
+					}
+				}
+				
+			}
+			
 		}
 		
 	}
