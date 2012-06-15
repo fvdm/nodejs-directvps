@@ -370,8 +370,22 @@ directvps.talk = function( type, path, fields, callback ) {
 			
 			response.on( 'data', function( chunk ) { data += chunk });
 			response.on( 'end', function() {
-				data = JSON.parse( data )
-				callback( data )
+				
+				// cleanup
+				data = data.replace( /^[\r\n\t\s ]+|[\r\n\t\s]+$/, '' )
+				
+				// do callback if valid data
+				var	first = data.substr(0,1),
+					last = data.substr( data.length -1, 1 )
+				
+				if( (first == '[' && last == ']') || (first == '{' && last == '}') ) {
+					callback( JSON.parse( data ) )
+				} else {
+					directvps.emit( 'fail', {
+						'reason':	'not json'
+					})
+				}
+				
 				// emit debug data
 				if( directvps.settings.debug === true ) {
 					directvps.emit( 'debug', {
