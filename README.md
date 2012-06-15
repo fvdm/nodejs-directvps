@@ -37,6 +37,13 @@ var directvps = require('/path/to/nodejs-directvps/directvps.js')
 
 In order to use the API you need to have an API access private-key and certificate. Refer to the documentation for details. After loading the module with *require()* set the key and certificate with **setup()**.
 
+### Variables
+
+* **privateKey** - The private-key in plain text with BEGIN and END lines.
+* **certificate** - The certificate in plain text with BEGIN and END lines.
+* **privateKeyFile** - Path to the private-key file, no combined PEM file.
+* **certificateFile** - Path to certificate file, no combined PEM file.
+
 ### Load from files
 
 This is the simple way, if you have access to a filesystem.
