@@ -252,6 +252,7 @@ directvps.vps = function( vpsid ) {
 		// action( nameid, subval, cb )
 		// action( nameid, when, cb )
 		// action( nameid, cb, when )
+		// action( nameid, subval, when, cb )
 		action: function() {
 			
 			// prepare
@@ -386,8 +387,8 @@ directvps.talk = function( type, path, fields, callback ) {
 	
 	// prepare
 	var headers = {
-		'Accept':			'application/json',
-		'User-Agent':		'directvps.js (https://github.com/fvdm/nodejs-directvps)'
+		'Accept':	'application/json',
+		'User-Agent':	'directvps.js (https://github.com/fvdm/nodejs-directvps)'
 	}
 	
 	if( type == 'POST' ) {
@@ -413,51 +414,50 @@ directvps.talk = function( type, path, fields, callback ) {
 	// build request
 	var req = https.request( options, function( response ) {
 			
-			// response
-			response.setEncoding('utf8')
-			var data = ''
+		// response
+		response.setEncoding('utf8')
+		var data = ''
+		
+		response.on( 'data', function( chunk ) { data += chunk });
+		response.on( 'end', function() {
 			
-			response.on( 'data', function( chunk ) { data += chunk });
-			response.on( 'end', function() {
-				
-				// cleanup
-				data = data.replace( /^[\r\n\t\s ]+|[\r\n\t\s]+$/, '' )
-				
-				// do callback if valid data
-				var	first = data.substr(0,1),
-					last = data.substr( data.length -1, 1 )
-				
-				if( (first == '[' && last == ']') || (first == '{' && last == '}') ) {
-					callback( JSON.parse( data ) )
-				} else {
-					directvps.emit( 'fail', {
-						'reason':	'not json'
-					})
-				}
-				
-				// emit debug data
-				if( directvps.settings.debug === true ) {
-					directvps.emit( 'debug', {
-						input: {
-							type:		type,
-							path:		path,
-							fields:		fields
-						},
-						request:	options,
-						response: {
-							length:		data.length,
-							statusCode:	response.statusCode,
-							httpVersion:	response.httpVersion,
-							headers:	response.headers,
-							body:		data
-						}
-					})
-				}
-				
-			})
+			// cleanup
+			data = data.replace( /^[\r\n\t\s ]+|[\r\n\t\s]+$/, '' )
 			
-		}
-	)
+			// do callback if valid data
+			var	first = data.substr(0,1),
+				last = data.substr( data.length -1, 1 )
+			
+			if( (first == '[' && last == ']') || (first == '{' && last == '}') ) {
+				callback( JSON.parse( data ) )
+			} else {
+				directvps.emit( 'fail', {
+					'reason':	'not json'
+				})
+			}
+			
+			// emit debug data
+			if( directvps.settings.debug === true ) {
+				directvps.emit( 'debug', {
+					input: {
+						type:		type,
+						path:		path,
+						fields:		fields
+					},
+					request:	options,
+					response: {
+						length:		data.length,
+						statusCode:	response.statusCode,
+						httpVersion:	response.httpVersion,
+						headers:	response.headers,
+						body:		data
+					}
+				})
+			}
+			
+		})
+		
+	})
 	
 	// error
 	req.on( 'error', function( error ) {
