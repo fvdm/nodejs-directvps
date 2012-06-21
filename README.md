@@ -109,10 +109,11 @@ Normal requested results are directly send to the associated *callback* function
 
 There is a debug mode built in which allows you to monitor all API communication in detail. It returns *talk()* input parameters, request options and API response details.
 
-**WARNING:** the *request* element contains your *private-key* and *certificate*. Make sure the debug details do not end up in the wrong hands.
 **To save memory debug-mode is inactive by default, therefore you must set _debug_ to _true_ in the settings to activate this event:**
 * **in setup:** directvps.setup({ debug: true })
 * **manually:** directvps.settings.debug = true
+
+**NOTE:** in the debug *request* element your **key** (private-key) and **cert** (certificate) are replaced with their sha1 hashes for security. This way you can compare them with the ones you intended to use without them ending up in the wrong hands.
 
 ```js
 directvps.on( 'debug', console.log )
@@ -136,8 +137,8 @@ directvps.on( 'debug', console.log )
         'User-Agent': 'directvps.js (https://github.com/fvdm/nodejs-directvps)',
         'Content-Type': 'application/x-www-form-urlencoded',
         'Content-Length': 116 },
-     key: '-----BEGIN RSA PRIVATE KEY-----',
-     cert: '-----BEGIN CERTIFICATE-----',
+     key: 'f1d2d2f924e986ac86fdf7b36c94bcdf32beec15',
+     cert: 'e242ed3bffccdf271b7fbaf34ed72d089537b42f',
      agent: false,
      createConnection: [Function: createConnection],
      defaultPort: 443,

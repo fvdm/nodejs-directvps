@@ -468,21 +468,31 @@ directvps.talk = function( type, path, fields, callback ) {
 			
 			// emit debug data
 			if( directvps.settings.debug === true ) {
-				directvps.emit( 'debug', {
+				var debug = {
 					input: {
-						type:		type,
-						path:		path,
-						fields:		fields
+						type:			type,
+						path:			path,
+						fields:			fields
 					},
-					request:	options,
+					request:		options,
 					response: {
-						length:		data.length,
-						statusCode:	response.statusCode,
+						length:			data.length,
+						statusCode:		response.statusCode,
 						httpVersion:	response.httpVersion,
-						headers:	response.headers,
-						body:		data
+						headers:		response.headers,
+						body:			data
 					}
-				})
+				}
+				
+				// replace security credentials with hashes
+				var	keyc = require('crypto').createHash('sha1'),
+					crtc = require('crypto').createHash('sha1')
+				
+				debug.request.key = keyc.update( directvps.settings.privateKey ).digest('hex')
+				debug.request.cert = crtc.update( directvps.settings.certificate ).digest('hex')
+				
+				// send event
+				directvps.emit( 'debug', debug )
 			}
 			
 		})
