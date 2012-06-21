@@ -5,6 +5,8 @@ Access the [DirectVPS](https://www.directvps.nl/) API from your Node.js code
 
 # Installation
 
+[![Build Status](https://secure.travis-ci.org/fvdm/nodejs-directvps.png?branch=master)](http://travis-ci.org/fvdm/nodejs-directvps)
+
 ## From NPM
 
 To install the module from the NPM repository run this:
