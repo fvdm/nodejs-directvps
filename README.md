@@ -157,6 +157,113 @@ directvps.on( 'debug', console.log )
      body: '[..]' } }
 ```
 
+# VPS
+
+## vps.action
+### ( actionID, [sub], [when], callback )
+
+* **actionID** - *required* - the ID or name of the action to run, best is to provide an ID. Providing a name would first request get_actionlist, loop through the list lowercase matching each description and finally run the action.
+* **sub** - *optional* - a value for some actions, ie. a productID
+* **when** - *optional* - date & time when to run the action, ie. **2012-06-22 14:07**
+
+Possibilities:
+
+```js
+// reboot asap
+directvps.vps( 123 ).action( 3, console.log )
+
+// upgrade to kernel #10 (3.2.2, 64b)
+directvps.vps( 123 ).action( 12, 10, console.log )
+
+// graceful shutdown on new-year, better use actionID 2
+directvps.vps( 123 ).action( 'shutdown', '01-01-2013 0:00', console.log )
+```
+
+## vps.actionStatus
+### ( planningID, callback )
+
+```js
+directvps.vps( 123 ).actionStatus( 8765, console.log )
+```
+```js
+{ status: '2',
+  error: '0',
+  errormessage: '',
+  label: 'complete' }
+```
+
+## vps.start
+### ( callback )
+
+Start a server.
+
+```js
+directvps.vps( 123 ).start( console.log )
+```
+
+## vps.shutdown
+### ( [force], callback )
+
+* **force** - *optional* - **true**: force shutdown, **false**: graceful shutdown. Instead of boolean you can also use string values true, false, yes, no, 1, 0.
+
+```js
+directvps.vps( 123 ).shutdown( true, console.log )
+```
+
+## vps.reboot
+### ( [force], callback )
+
+* **force** - *optional* - **true**: force shutdown, **false**: graceful shutdown. Instead of boolean you can also use string values true, false, yes, no, 1, 0.
+
+```js
+directvps.vps( 123 ).reboot( true, console.log )
+```
+
+## vps.backups
+### ( callback )
+
+Get a list of all backups for this server.
+
+```js
+directvps.vps( 123 ).backups( console.log )
+```
+```js
+{ '2345': 
+   { einde: '2012-05-14 00:22:39',
+     backupid: '2345',
+     level: '0',
+     status: '1',
+     begin: '2012-05-14 00:14:59',
+     size: '478756160' },
+  '1234': 
+   { einde: '2012-06-13 02:33:40',
+     backupid: '1234',
+     level: '1',
+     status: '1',
+     begin: '2012-06-13 02:32:21',
+     size: '1885186' } }
+```
+
+## vps.restore
+### ( backupID, callback )
+
+Restore a backup.
+
+```js
+directvps.vps( 123 ).restore( 1234567, console.log )
+```
+
+```js
+{ planningid: '8765',
+  error: '0',
+  errormessage: '' }
+```
+
+## vps.ipv4
+### ( [ip], callback )
+
+Get details about one IP or all associated to this server.
+
 # Unlicense
 
 This is free and unencumbered software released into the public domain.

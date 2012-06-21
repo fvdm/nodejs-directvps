@@ -349,7 +349,35 @@ directvps.vps = function( vpsid ) {
 			)
 		},
 		
-		// Backups
+		// start
+		start: function( cb ) {
+			directvps.vps( vpsid ).action( 1, cb )
+		},
+		
+		// shutdown
+		shutdown: function( force, cb ) {
+			if( force && (force +'').match( /^(true|yes|1)$/i ) ) {
+				directvps.vps( vpsid ).action( 9, cb )
+			} else {
+				directvps.vps( vpsid ).action( 2, cb )
+			}
+		},
+		
+		// Reboot
+		reboot: function( force, cb ) {
+			if( force && (force +'').match( /^(true|yes|1)$/i ) ) {
+				directvps.vps( vpsid ).action( 10, cb )
+			} else {
+				directvps.vps( vpsid ).action( 3, cb )
+			}
+		},
+		
+		// Restore backup
+		restore: function( backupID, cb ) {
+			directvps.vps( vpsid ).action( 8, backupID, cb )
+		},
+		
+		// List backups
 		backups: function( cb ) {
 			directvps.get_backuplist( vpsid, cb )
 		},
