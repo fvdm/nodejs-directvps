@@ -3,9 +3,9 @@ nodejs-directvps
 
 Access the [DirectVPS](https://www.directvps.nl/) API from your Node.js code
 
-## Installation
+# Installation
 
-### From NPM
+## From NPM
 
 To install the module from the NPM repository run this:
 
@@ -19,7 +19,7 @@ And then link inside your code with:
 var directvps = require('directvps')
 ```
 
-### From source
+## From source
 
 Or install directly from Github source:
 
@@ -33,11 +33,11 @@ And load in your code:
 var directvps = require('/path/to/nodejs-directvps/directvps.js')
 ```
 
-## Setup
+# Setup
 
 In order to use the API you need to have an API access private-key and certificate. Refer to the documentation for details. After loading the module with *require()* set the key and certificate with **setup()**.
 
-### Variables
+## Variables
 
 * **privateKey** - The private-key in plain text with BEGIN and END lines.
 * **certificate** - The certificate in plain text with BEGIN and END lines.
@@ -46,7 +46,7 @@ In order to use the API you need to have an API access private-key and certifica
 
 * **debug** - Set debug mode (boolean). This will emit the *debug* event on all API communication. Default is *false* to save memory.
 
-### Load from files
+## Load from files
 
 This is the simple way, if you have access to a filesystem.
 
@@ -57,7 +57,7 @@ directvps.setup({
 })
 ```
 
-### Load directly
+## Load directly
 
 Or you can load the private-key and certificate directly, ie. from a database.
 
@@ -68,13 +68,15 @@ directvps.setup({
 })
 ```
 
-## Usage
+# Usage
 
-This module is event based, meaning all functions require a **callback** parameter in order to process the result. All methods from the API are implemented directly, but for VPS specific methods a shorthand is also available. The two samples below highlight both methods. 
+This module is event based, meaning all functions require a **callback** function parameter to process the result. All methods from the API are implemented directly, but for VPS specific methods a shorthand is also available. The two samples below highlight both methods. 
 
-**The sample below is based on the NPM install. If you rather directly use the source file use the *require()* replacement above.**
+**The samples below is based on the NPM install. If you rather directly use the source file use the *require()* replacement above.**
 
-### Direct method
+## Direct method
+
+In this example the API method *get_vpslist* is called, the *callback function* loops through the resulting *servers* object and for each server it writes a log to the console.
 
 ```js
 var directvps = require('directvps')
@@ -87,7 +89,9 @@ directvps.get_vpslist( function( servers ) {
 })
 ```
 
-### Shorthand method
+## Shorthand method
+
+In this example the **vps** shorthand method is called to get the functions for server *123*. Then its sub-function **.details** is called to get the server's information. In the background the script requests all servers with **get_vpslist**, loops through them until *vpsid* *123* is found and then send the result to the **callback** *function*. In this case, write a line to the console.
 
 ```js
 var directvps = require('directvps')
@@ -97,13 +101,18 @@ directvps.vps(123).details( function( vps ) {
 })
 ```
 
-## Events
+# Events
 
-### debug
+Normal requested results are directly send to the associated *callback* function, but some others have their own event hooks:
+
+## debug
 
 There is a debug mode built in which allows you to monitor all API communication in detail. It returns *talk()* input parameters, request options and API response details.
 
 **WARNING:** the *request* element contains your *private-key* and *certificate*. Make sure the debug details do not end up in the wrong hands.
+**To save memory debug-mode is inactive by default, therefore you must set _debug_ to _true_ in the settings to activate this event:**
+* **in setup:** directvps.setup({ debug: true })
+* **manually:** directvps.settings.debug = true
 
 ```js
 directvps.on( 'debug', console.log )
