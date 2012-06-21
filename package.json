@@ -2,7 +2,7 @@
   "author": "Franklin van de Meent <fr@nkl.in> (http://frankl.in)",
   "name": "directvps",
   "description": "Access the DireVPS API (http://directvps.nl)",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "homepage": "http://fvdm.github.com/nodejs-directvps/",
   "repository": {
     "type": "git",
