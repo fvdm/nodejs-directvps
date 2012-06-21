@@ -385,7 +385,7 @@ directvps.vps = function( vpsid ) {
 		// Get IPv4 address
 		ipv4: function( ip, cb ) {
 			
-			if( cb === undefined && typeof ip == 'function' ) {
+			if( !cb && typeof ip == 'function' ) {
 				
 				// list
 				var cb = ip

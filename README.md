@@ -105,7 +105,21 @@ directvps.vps(123).details( function( vps ) {
 
 Normal requested results are directly send to the associated *callback* function, but some others have their own event hooks:
 
+## fail
+### ( error, request, fields )
+
+API communication failed.
+
+* **error** - the error
+* **request** - request variables
+* **fields** - data that was sent
+
+```js
+directvps.on( 'fail', console.log )
+```
+
 ## debug
+### ( details )
 
 There is a debug mode built in which allows you to monitor all API communication in detail. It returns *talk()* input parameters, request options and API response details.
 
