@@ -41,12 +41,42 @@ In order to use the API you need to have an API access private-key and certifica
 
 ## Variables
 
-* **privateKey** - The private-key in plain text with BEGIN and END lines.
-* **certificate** - The certificate in plain text with BEGIN and END lines.
-* **privateKeyFile** - Path to the private-key file, no combined PEM file.
-* **certificateFile** - Path to certificate file, no combined PEM file.
-
-* **debug** - Set debug mode (boolean). This will emit the *debug* event on all API communication. Default is *false* to save memory.
+<table>
+	<th>name</th>
+	<th>type</th>
+	<th>default</th>
+	<th>description</th>
+	<tr>
+		<td>privateKey</td>
+		<td>string</td>
+		<td></td>
+		<td>The private-key in plain text with BEGIN and END lines.</td>
+	</tr>
+	<tr>
+		<td>certificate</td>
+		<td>string</td>
+		<td></td>
+		<td>The certificate in plain text with BEGIN and END lines.</td>
+	</tr>
+	<tr>
+		<td>privateKeyFile</td>
+		<td>string</td>
+		<td></td>
+		<td>Path to the private-key file, no combined PEM file.</td>
+	</tr>
+	<tr>
+		<td>certificateFile</td>
+		<td>string</td>
+		<td></td>
+		<td>Path to certificate file, no combined PEM file.</td>
+	</tr>
+	<tr>
+		<td>debug</td>
+		<td>boolean</td>
+		<td>false</td>
+		<td>Set debug mode (boolean). This will emit the *debug* event on all API communication. Default is *false* to save memory.</td>
+	</tr>
+</table>
 
 ## Load from files
 
@@ -73,6 +103,8 @@ directvps.setup({
 # Usage
 
 This module is event based, meaning all functions require a **callback** function parameter to process the result. All methods from the API are implemented directly, but for VPS specific methods a shorthand is also available. The two samples below highlight both methods. 
+
+All *boolean* parameters can also be strings: true/false, yes/no, 1/0.
 
 **The samples below is based on the NPM install. If you rather directly use the source file use the *require()* replacement above.**
 
@@ -118,6 +150,15 @@ API communication failed.
 
 ```js
 directvps.on( 'fail', console.log )
+```
+
+## fatal
+### ( reason )
+
+Something went wrong and the process is about to be destroyed.
+
+```js
+directvps.on( 'fatal', console.log )
 ```
 
 ## debug
@@ -178,9 +219,36 @@ directvps.on( 'debug', console.log )
 ## vps.action
 ### ( actionID, [sub], [when], callback )
 
-* **actionID** - *required* - the ID or name of the action to run, best is to provide an ID. Providing a name would first request get_actionlist, loop through the list lowercase matching each description and finally run the action.
-* **sub** - *optional* - a value for some actions, ie. a productID
-* **when** - *optional* - date & time when to run the action, ie. **2012-06-22 14:07**
+<table>
+	<th>variable</th>
+	<th>required</th>
+	<th>type</th>
+	<th>description</th>
+	<tr>
+		<td>actionID</td>
+		<td>&radic;</td>
+		<td>string</td>
+		<td>ID or name of the action to run, best is to provide an ID. Providing a name would first request get_actionlist, loop through the list lowercase matching each description and finally run the action.</td>
+	</tr>
+	<tr>
+		<td>sub</td>
+		<td></td>
+		<td>string</td>
+		<td>a value for some actions, ie. a <b>product_id</b></td>
+	</tr>
+	<tr>
+		<td>when</td>
+		<td></td>
+		<td>datetime</td>
+		<td>date & time when to run the action, ie. <b>2012-06-22 14:07</b></td>
+	</tr>
+	<tr>
+		<td><em>callback</em></td>
+		<td>&radic;</td>
+		<td>function</td>
+		<td>object with result and <b>planning_id</b></td>
+	</tr>
+</table>
 
 Possibilities:
 
@@ -198,6 +266,27 @@ directvps.vps( 123 ).action( 'shutdown', '01-01-2013 0:00', console.log )
 ## vps.actionStatus
 ### ( planningID, callback )
 
+Get the status of the planned action.
+
+<table>
+	<th>variable</th>
+	<th>required</th>
+	<th>type</th>
+	<th>description</th>
+	<tr>
+		<td>planningID</td>
+		<td>&radic;</td>
+		<td>numeric</td>
+		<td><b>planning_id</b> from <b>vps.action</b></td>
+	</tr>
+	<tr>
+		<td><em>callback</em></td>
+		<td>&radic;</td>
+		<td>function</td>
+		<td>object with status details</td>
+	</tr>
+</table>
+
 ```js
 directvps.vps( 123 ).actionStatus( 8765, console.log )
 ```
@@ -211,7 +300,20 @@ directvps.vps( 123 ).actionStatus( 8765, console.log )
 ## vps.start
 ### ( callback )
 
-Start a server.
+Start a server (after installation or shutdown).
+
+<table>
+	<th>variable</th>
+	<th>required</th>
+	<th>type</th>
+	<th>description</th>
+	<tr>
+		<td><em>callback</em></td>
+		<td>&radic;</td>
+		<td>function</td>
+		<td>object with action result and <b>planning_id</b></td>
+	</tr>
+</table>
 
 ```js
 directvps.vps( 123 ).start( console.log )
@@ -220,7 +322,37 @@ directvps.vps( 123 ).start( console.log )
 ## vps.shutdown
 ### ( [force], callback )
 
-* **force** - *optional* - **true**: force shutdown, **false**: graceful shutdown. Instead of boolean you can also use string values true, false, yes, no, 1, 0.
+Shutdown a server.
+
+<table>
+	<th>variable</th>
+	<th>required</th>
+	<th>type</th>
+	<th>description</th>
+	<tr>
+		<td>force</td>
+		<td></td>
+		<td>boolean</td>
+		<td>
+			<table>
+				<tr>
+					<td><b>true</b></td>
+					<td>force shutdown</td>
+				</tr>
+				<tr>
+					<td><b>false</b></td>
+					<td>graceful shutdown</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td><em>callback</em></td>
+		<td>&radic;</td>
+		<td>function</td>
+		<td>object with action result and <b>planning_id</b></td>
+	</tr>
+</table>
 
 ```js
 directvps.vps( 123 ).shutdown( true, console.log )
@@ -229,7 +361,37 @@ directvps.vps( 123 ).shutdown( true, console.log )
 ## vps.reboot
 ### ( [force], callback )
 
-* **force** - *optional* - **true**: force shutdown, **false**: graceful shutdown. Instead of boolean you can also use string values true, false, yes, no, 1, 0.
+Reboot a server.
+
+<table>
+	<th>variable</th>
+	<th>required</th>
+	<th>type</th>
+	<th>description</th>
+	<tr>
+		<td>force</td>
+		<td></td>
+		<td>boolean</td>
+		<td>
+			<table>
+				<tr>
+					<td><b>true</b></td>
+					<td>force shutdown</td>
+				</tr>
+				<tr>
+					<td><b>false</b></td>
+					<td>graceful shutdown</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td><em>callback</em></td>
+		<td>&radic;</td>
+		<td>function</td>
+		<td>object with action result and <b>planning_id</b></td>
+	</tr>
+</table>
 
 ```js
 directvps.vps( 123 ).reboot( true, console.log )
@@ -239,6 +401,19 @@ directvps.vps( 123 ).reboot( true, console.log )
 ### ( callback )
 
 Get a list of all backups for this server.
+
+<table>
+	<th>variable</th>
+	<th>required</th>
+	<th>type</th>
+	<th>description</th>
+	<tr>
+		<td><em>callback</em></td>
+		<td>&radic;</td>
+		<td>function</td>
+		<td>object with action result and <b>planning_id</b></td>
+	</tr>
+</table>
 
 ```js
 directvps.vps( 123 ).backups( console.log )
@@ -265,6 +440,25 @@ directvps.vps( 123 ).backups( console.log )
 
 Restore a backup.
 
+<table>
+	<th>variable</th>
+	<th>required</th>
+	<th>type</th>
+	<th>description</th>
+	<tr>
+		<td>backupID</td>
+		<td>&radic;</td>
+		<td>numeric</td>
+		<td>ID of the backup to restore</td>
+	</tr>
+	<tr>
+		<td><em>callback</em></td>
+		<td>&radic;</td>
+		<td>function</td>
+		<td>object with action result and <b>planning_id</b></td>
+	</tr>
+</table>
+
 ```js
 directvps.vps( 123 ).restore( 1234567, console.log )
 ```
@@ -279,6 +473,25 @@ directvps.vps( 123 ).restore( 1234567, console.log )
 ### ( [ip], callback )
 
 Get details about one IP or all associated to this server.
+
+<table>
+	<th>variable</th>
+	<th>required</th>
+	<th>type</th>
+	<th>description</th>
+	<tr>
+		<td>ip</td>
+		<td></td>
+		<td>string</td>
+		<td>when provided details about one IPv4 address will be returned, when excluded the all IPv4 address and their details will be returned.</td>
+	</tr>
+	<tr>
+		<td><em>callback</em></td>
+		<td>&radic;</td>
+		<td>function</td>
+		<td>object with IP details</td>
+	</tr>
+</table>
 
 # Unlicense
 
