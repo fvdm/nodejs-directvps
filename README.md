@@ -110,7 +110,7 @@ All *boolean* parameters can also be strings: true/false, yes/no, 1/0.
 
 ## Direct method
 
-In this example the API method *get_vpslist* is called, the *callback function* loops through the resulting *servers* object and for each server it writes a log to the console.
+In this example the API method *[get_vpslist](getvpslist)* is called, the *callback function* loops through the resulting *servers* object and for each server it writes a log to the console.
 
 ```js
 var directvps = require('directvps')
@@ -125,7 +125,7 @@ directvps.get_vpslist( function( servers ) {
 
 ## Shorthand method
 
-In this example the **vps** shorthand method is called to get the functions for server *123*. Then its sub-function **.details** is called to get the server's information. In the background the script requests all servers with **get_vpslist**, loops through them until *vpsid* *123* is found and then send the result to the **callback** *function*. In this case, write a line to the console.
+In this example the **[vps](vps)** shorthand method is called to get the functions for server *123*. Then its sub-function **[.details](vpsdetails)** is called to get the server's information. In the background the script requests all servers with **[get_vpslist](getvpslist)**, loops through them until *vpsid* *123* is found and then send the result to the **callback** *function*. In this case, to write a line to the console.
 
 ```js
 var directvps = require('directvps')
@@ -246,7 +246,7 @@ directvps.on( 'debug', console.log )
 		<td><em>callback</em></td>
 		<td>&radic;</td>
 		<td>function</td>
-		<td>object with result and <b>planning_id</b></td>
+		<td>object with result and <b><a href="#vpsactionstatus">planning_id</a></b></td>
 	</tr>
 </table>
 
@@ -277,7 +277,7 @@ Get the status of the planned action.
 		<td>planningID</td>
 		<td>&radic;</td>
 		<td>numeric</td>
-		<td><b>planning_id</b> from <b>vps.action</b></td>
+		<td><b>planning_id</b> from <b><a href="#vpsaction">vps.action</a></b></td>
 	</tr>
 	<tr>
 		<td><em>callback</em></td>
@@ -311,7 +311,7 @@ Start a server (after installation or shutdown).
 		<td><em>callback</em></td>
 		<td>&radic;</td>
 		<td>function</td>
-		<td>object with action result and <b>planning_id</b></td>
+		<td>object with action result and <b><a href="#vpsactionstatus">planning_id</a></b></td>
 	</tr>
 </table>
 
@@ -350,7 +350,7 @@ Shutdown a server.
 		<td><em>callback</em></td>
 		<td>&radic;</td>
 		<td>function</td>
-		<td>object with action result and <b>planning_id</b></td>
+		<td>object with action result and <b><a href="#vpsactionstatus">planning_id</a></b></td>
 	</tr>
 </table>
 
@@ -389,7 +389,7 @@ Reboot a server.
 		<td><em>callback</em></td>
 		<td>&radic;</td>
 		<td>function</td>
-		<td>object with action result and <b>planning_id</b></td>
+		<td>object with action result and <b><a href="#vpsactionstatus">planning_id</a></b></td>
 	</tr>
 </table>
 
@@ -411,7 +411,7 @@ Get a list of all backups for this server.
 		<td><em>callback</em></td>
 		<td>&radic;</td>
 		<td>function</td>
-		<td>object with action result and <b>planning_id</b></td>
+		<td>object with action result and <b><a href="#vpsactionstatus">planning_id</a></b></td>
 	</tr>
 </table>
 
@@ -455,7 +455,7 @@ Restore a backup.
 		<td><em>callback</em></td>
 		<td>&radic;</td>
 		<td>function</td>
-		<td>object with action result and <b>planning_id</b></td>
+		<td>object with action result and <b><a href="#vpsactionstatus">planning_id</a></b></td>
 	</tr>
 </table>
 
