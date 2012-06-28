@@ -130,7 +130,14 @@ In this example the **[vps](#vps)** shorthand method is called to get the functi
 ```js
 var directvps = require('directvps')
 
-directvps.vps(123).details( function( vps ) {
+// one line
+directvps.vps(123).details( function( details ) {
+	console.log( 'VPS '+ vps.vpsid +' allows '+ vps.traffic 'GB traffic' )
+})
+
+// or via a variable
+var vps = directvps.vps(123)
+vps.details( function( details ) {
 	console.log( 'VPS '+ vps.vpsid +' allows '+ vps.traffic 'GB traffic' )
 })
 ```
