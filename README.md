@@ -106,7 +106,7 @@ This module is event based, meaning all functions require a **callback** functio
 
 All *boolean* parameters can also be strings: true/false, yes/no, 1/0.
 
-**The samples below is based on the NPM install. If you rather directly use the source file use the *require()* replacement above.**
+**The exsamples below are based on the NPM install. If you rather directly use the source file use the *require()* replacement above.**
 
 ## Direct method
 
