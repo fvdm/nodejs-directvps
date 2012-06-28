@@ -169,10 +169,12 @@ directvps.get_vpslist( function( servers ) {
 				var status = 'Server '+ vpsid +' shutdown '
 				
 				if( plan.error == '0' ) {
-					status += 'failed: '+ plan.errormessage
-				} else {
 					status += 'planned: ID '+ plan.planningid
+				} else {
+					status += 'failed: '+ plan.errormessage
 				}
+				
+				console.log( status )
 				
 			})
 			
