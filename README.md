@@ -142,6 +142,47 @@ vps.details( function( details ) {
 })
 ```
 
+## Complicated example
+
+Shutdown all servers from one client, these may be identified with 'client: 123' in their tag.
+
+```js
+// First get the list of all servers
+directvps.get_vpslist( function( servers ) {
+	
+	// walk through each of them
+	for( var vpsid in servers ) {
+		
+		// request server specific functions
+		var vps = directvps.vps( vpsid )
+		
+		// and its information
+		vps.details = servers[ vpsid ]
+		
+		// do the matching
+		if( vps.details.tag.match( /^client: 123\, / ) ) {
+			
+			// found one, shutdown gracefully
+			vps.shutdown( function( plan ) {
+				
+				// report status to console
+				var status = 'Server '+ vpsid +' shutdown '
+				
+				if( plan.error == '0' ) {
+					status += 'failed: '+ plan.errormessage
+				} else {
+					status += 'planned: ID '+ plan.planningid
+				}
+				
+			})
+			
+		}
+		
+	}
+	
+})
+```
+
 # Events
 
 Normal requested results are directly send to the associated *callback* function, but some others have their own event hooks:
