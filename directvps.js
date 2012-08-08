@@ -480,7 +480,7 @@ directvps.talk = function( type, path, fields, callback ) {
 		response.on( 'end', function() {
 			
 			// cleanup
-			data = data.replace( /^[\r\n\t\s ]+|[\r\n\t\s]+$/, '' )
+			data = data.trim()
 			
 			// do callback if valid data
 			var	first = data.substr(0,1),
