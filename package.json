@@ -21,5 +21,9 @@
   "engines": {
     "node":               "*"
   },
-  "keywords":             ["directvps", "api", "middleware", "vps", "servers"]
+  "keywords":             ["directvps", "api", "middleware", "vps", "servers"],
+  "license": {
+    "type":               "Public Domain",
+    "url":                "https://github.com/fvdm/nodejs-directvps/raw/master/UNLICENSE"
+  }
 }
