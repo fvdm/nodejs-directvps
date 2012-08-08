@@ -84,11 +84,27 @@ directvps.get_productlist = function( callback ) {
 // Get images
 directvps.get_imagelist = function( callback ) {
 	directvps.talk( 'GET', 'get_imagelist', {}, function( res ) {
-		var images = {}
+		var images = {},
+		    versions = {}
+		
+		// build images & collect latest versions
 		for( var i in res ) {
 			var image = res[i]
+			
+			image.versie_check = parseInt( image.versie.replace('.', '') )
+			if( !versions[ image.distributie ] || image.versie_check > versions[ image.distributie ] ) {
+				versions[ image.distributie ] = image.versie_check
+			}
+			
 			images[ image.imageid ] = image
 		}
+		
+		// set latest versions
+		for( var i in images ) {
+			images[i].laatste_versie = images[i].versie_check == versions[ images[i].distributie ] ? '1' : '0'
+			delete images[i].versie_check
+		}
+		
 		callback( images )
 	})
 }
