@@ -148,7 +148,10 @@ directvps.get_vpslist = function( callback ) {
 			var server = res[s]
 			servers[ server.vpsid ] = server
 		}
-		callback( servers )
+		
+		if( typeof callback == 'function' ) {
+			callback( servers )
+		}
 	})
 }
 
