@@ -529,7 +529,7 @@ directvps.talk = function( type, path, fields, callback ) {
 	
 	// error
 	req.on( 'error', function( error ) {
-		directvps.emit( 'fatal', error, options, fields )
+		directvps.emit( 'fail', error, options, fields )
 	})
 	
 	// post and close
