@@ -334,8 +334,8 @@ directvps.vps = function( vpsid ) {
 		actionStatus: function( actionRef, cb ) {
 			directvps.get_actionstatus(
 				{
-					vpsid: vpsid,
-					planningid: actionRef
+					vpsid:			vpsid,
+					planningid:		actionRef
 				},
 				function( res ) {
 					
