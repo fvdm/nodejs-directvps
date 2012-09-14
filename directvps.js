@@ -1,6 +1,9 @@
 /*
-DirectVPS module for node.js
-https://github.com/fvdm/nodejs-directvps
+Unofficial DirectVPS module for node.js
+
+Source:       https://github.com/fvdm/nodejs-directvps
+Feedback:     https://github.com/fvdm/nodejs-directvps/issues
+License:      Unlicense / Public Domain
 
 This is free and unencumbered software released into the public domain.
 
