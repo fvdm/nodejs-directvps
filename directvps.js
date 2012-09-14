@@ -242,8 +242,8 @@ directvps.get_reverse = function( vpsid, ipv4, callback ) {
 }
 
 // Edit IP reverse address
-directvps.edit_reverse = function( set, callback ) {
-	directvps.talk( 'POST', 'edit_reverse', set, callback )
+directvps.edit_reverse = function( vpsid, ipv4, reverse, callback ) {
+	directvps.talk( 'POST', 'edit_reverse', { vpsid: vpsid, ipv4: ipv4, reverse: reverse }, callback )
 }
 
 // Create VPS
@@ -475,11 +475,7 @@ directvps.vps = function( vpsid ) {
 					} else {
 						
 						// set
-						directvps.edit_reverse({
-							vpsid:		vpsid,
-							ipv4:		ip,
-							reverse: 	name
-						}, cb )
+						directvps.edit_reverse( vpsid, ip, reverse, cb )
 						
 					}
 				},
