@@ -517,6 +517,23 @@ directvps.vps( 123 ).addDirectadmin( 111222, console.log )
 ```
 
 
+## vps.deleteDirectadmin
+### ( licenseID, callback )
+
+Delete a DirectAdmin license from this server.
+
+```
+Name       Type       Required   Description                  Example
+---------   --------   --------   -------------------------   -----------
+licenseID   numeric    required   DirectAdmin license ID      111222
+callback    function   required   Object with action result   console.log
+```
+
+```js
+directvps.vps( 123 ).deleteDirectadmin( 111222, console.log )
+```
+
+
 ## vps.addIPv4
 ### ( callback )
 

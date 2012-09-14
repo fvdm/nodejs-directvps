@@ -429,6 +429,11 @@ directvps.vps = function( vpsid ) {
 			directvps.add_da( vpsid, cb )
 		},
 		
+		// Delete DirectAdmin license
+		deleteDirectadmin: function( licenseID, cb ) {
+			directvps.del_da( vpsid, licenseID, cb )
+		},
+		
 		// Add (buy) an IPv4 address
 		addIPv4: function( cb ) {
 			directvps.add_ipv4( vpsid, cb )
