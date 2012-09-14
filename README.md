@@ -514,6 +514,18 @@ ip         string     optional   Include: get details about one IP   1.2.3.4
 callback   function   required   Object with action result           console.log
 ```
 
+#### Details about one IP
+
+```js
+directvps.vps( 123 ).ipv4( '1.2.3.4', console.log )
+```
+
+#### Details about all associated IPs
+
+```js
+directvps.vps( 123 ).ipv4( console.log )
+```
+
 
 Unlicense
 ============================
