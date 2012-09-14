@@ -293,9 +293,7 @@ directvps.vps = function( vpsid ) {
 		
 		// Update datails
 		update: function( set, cb ) {
-			if( set.vpsid === undefined ) {
-				set.vpsid = vpsid
-			}
+			set.vpsid = vpsid
 			directvps.edit_vps( set, cb )
 		},
 		
