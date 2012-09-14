@@ -1,11 +1,15 @@
 nodejs-directvps
-================
+============================
 
 Access the [DirectVPS](https://www.directvps.nl/) API from your Node.js code
 
-# Installation
+
+Installation
+============================
+
 
 [![Build Status](https://secure.travis-ci.org/fvdm/nodejs-directvps.png?branch=master)](http://travis-ci.org/fvdm/nodejs-directvps)
+
 
 ## From NPM
 
@@ -21,6 +25,7 @@ And then link inside your code with:
 var directvps = require('directvps')
 ```
 
+
 ## From source
 
 Or install directly from Github source:
@@ -35,48 +40,28 @@ And load in your code:
 var directvps = require('/path/to/nodejs-directvps/directvps.js')
 ```
 
-# Setup
+
+Setup
+============================
+
 
 In order to use the API you need to have an API access private-key and certificate. Refer to the documentation for details. After loading the module with *require()* set the key and certificate with **setup()**.
 
+
 ## Variables
 
-<table>
-	<th>name</th>
-	<th>type</th>
-	<th>default</th>
-	<th>description</th>
-	<tr>
-		<td>privateKey</td>
-		<td>string</td>
-		<td></td>
-		<td>The private-key in plain text with BEGIN and END lines.</td>
-	</tr>
-	<tr>
-		<td>certificate</td>
-		<td>string</td>
-		<td></td>
-		<td>The certificate in plain text with BEGIN and END lines.</td>
-	</tr>
-	<tr>
-		<td>privateKeyFile</td>
-		<td>string</td>
-		<td></td>
-		<td>Path to the private-key file, no combined PEM file.</td>
-	</tr>
-	<tr>
-		<td>certificateFile</td>
-		<td>string</td>
-		<td></td>
-		<td>Path to certificate file, no combined PEM file.</td>
-	</tr>
-	<tr>
-		<td>debug</td>
-		<td>boolean</td>
-		<td>false</td>
-		<td>Set debug mode (boolean). This will emit the *debug* event on all API communication. Default is *false* to save memory.</td>
-	</tr>
-</table>
+```
+Name              Type      Description                          Example
+---------------   -------   ----------------------------------   ---------
+privateKey        string    The private-key in plain text,
+certificate       string    The certificate in plain text.
+privateKeyFile    string    Path to the private-key file,        ~/api.key
+certificateFile   string    Path to certificate file,            ~/api.crt
+debug             boolean   Set debug mode. This will emit the   true
+                            debug event on all API calls.
+                            Default is 'false' to save memory.
+```
+
 
 ## Load from files
 
@@ -89,6 +74,7 @@ directvps.setup({
 })
 ```
 
+
 ## Load directly
 
 Or you can load the private-key and certificate directly, ie. from a database.
@@ -100,13 +86,16 @@ directvps.setup({
 })
 ```
 
-# Usage
+Usage
+============================
+
 
 This module is event based, meaning all functions require a **callback** function parameter to process the result. All methods from the API are implemented directly, but for VPS specific methods a shorthand is also available. The two samples below highlight both methods. 
 
 All *boolean* parameters can also be strings: true/false, yes/no, 1/0.
 
 **The exsamples below are based on the NPM install. If you rather directly use the source file use the *require()* replacement above.**
+
 
 ## Direct method
 
@@ -122,6 +111,7 @@ directvps.get_vpslist( function( servers ) {
 	}
 })
 ```
+
 
 ## Shorthand method
 
@@ -142,7 +132,9 @@ vps.details( function( details ) {
 })
 ```
 
-## Complicated example
+
+## Extended example
+
 
 Shutdown all servers from one client, these may be identified with 'client: 123' in their tag.
 
@@ -185,22 +177,32 @@ directvps.get_vpslist( function( servers ) {
 })
 ```
 
-# Events
+
+Events
+============================
+
 
 Normal requested results are directly send to the associated *callback* function, but some others have their own event hooks:
+
 
 ## fail
 ### ( error, request, fields )
 
 API communication failed.
 
-* **error** - the error
-* **request** - request variables
-* **fields** - data that was sent
+```
+Param     Description
+-------   ------------------
+error     The error
+request   Request parameters
+fields    Data that was sent
+```
+
 
 ```js
 directvps.on( 'fail', console.log )
 ```
+
 
 ## fatal
 ### ( reason )
@@ -210,6 +212,7 @@ Something went wrong and the process is about to be destroyed.
 ```js
 directvps.on( 'fatal', console.log )
 ```
+
 
 ## debug
 ### ( details )
@@ -264,41 +267,27 @@ directvps.on( 'debug', console.log )
      body: '[..]' } }
 ```
 
-# VPS
+
+VPS
+============================
+
 
 ## vps.action
 ### ( actionID, [sub], [when], callback )
 
-<table>
-	<th>variable</th>
-	<th>required</th>
-	<th>type</th>
-	<th>description</th>
-	<tr>
-		<td>actionID</td>
-		<td>&radic;</td>
-		<td>string</td>
-		<td>ID or name of the action to run, best is to provide an ID. Providing a name would first request get_actionlist, loop through the list lowercase matching each description and finally run the action.</td>
-	</tr>
-	<tr>
-		<td>sub</td>
-		<td></td>
-		<td>string</td>
-		<td>a value for some actions, ie. a <b>product_id</b></td>
-	</tr>
-	<tr>
-		<td>when</td>
-		<td></td>
-		<td>datetime</td>
-		<td>date & time when to run the action, ie. <b>2012-06-22 14:07</b></td>
-	</tr>
-	<tr>
-		<td><em>callback</em></td>
-		<td>&radic;</td>
-		<td>function</td>
-		<td>object with result and <b><a href="#vpsactionstatus">planning_id</a></b></td>
-	</tr>
-</table>
+```
+Name       Type       Required   Description                              Example
+--------   --------   --------   --------------------------------------   ---------------
+actionID   string     required   ID or name of the action to run, best    12
+                                 is to provide an ID. Providing a name
+                                 would first request get_actionlist,
+                                 loop through the list lowercase
+                                 matching each description and finally
+                                 run the action.
+sub        string     optional   A value for some actions, 'product_id'   10
+when       string     optional   Schedule at date & time.                 2012-09-15 4:06
+callback   function   required   Receives result object.                  console.log
+```
 
 Possibilities:
 
@@ -318,28 +307,17 @@ directvps.vps( 123 ).action( 'shutdown', '01-01-2013 0:00', console.log )
 
 Get the status of the planned action.
 
-<table>
-	<th>variable</th>
-	<th>required</th>
-	<th>type</th>
-	<th>description</th>
-	<tr>
-		<td>planningID</td>
-		<td>&radic;</td>
-		<td>numeric</td>
-		<td><b>planning_id</b> from <b><a href="#vpsaction">vps.action</a></b></td>
-	</tr>
-	<tr>
-		<td><em>callback</em></td>
-		<td>&radic;</td>
-		<td>function</td>
-		<td>object with status details</td>
-	</tr>
-</table>
+```
+Name         Type       Required   Description                            Example
+----------   --------   --------   ------------------------------------   -----------
+planningID   numeric    required   planning_id from 'vps.action'.         8765
+callback     function   required   Receives object with status details.   console.log
+```
 
 ```js
 directvps.vps( 123 ).actionStatus( 8765, console.log )
 ```
+
 ```js
 { status: '2',
   error: '0',
@@ -347,101 +325,53 @@ directvps.vps( 123 ).actionStatus( 8765, console.log )
   label: 'complete' }
 ```
 
+
 ## vps.start
 ### ( callback )
 
 Start a server (after installation or shutdown).
 
-<table>
-	<th>variable</th>
-	<th>required</th>
-	<th>type</th>
-	<th>description</th>
-	<tr>
-		<td><em>callback</em></td>
-		<td>&radic;</td>
-		<td>function</td>
-		<td>object with action result and <b><a href="#vpsactionstatus">planning_id</a></b></td>
-	</tr>
-</table>
+```
+Name       Type       Required   Description                  Example
+--------   --------   --------   --------------------------   -----------
+callback   function   required   Object with action result.   console.log
+```
 
 ```js
 directvps.vps( 123 ).start( console.log )
 ```
+
 
 ## vps.shutdown
 ### ( [force], callback )
 
 Shutdown a server.
 
-<table>
-	<th>variable</th>
-	<th>required</th>
-	<th>type</th>
-	<th>description</th>
-	<tr>
-		<td>force</td>
-		<td></td>
-		<td>boolean</td>
-		<td>
-			<table>
-				<tr>
-					<td><b>true</b></td>
-					<td>force shutdown</td>
-				</tr>
-				<tr>
-					<td><b>false</b></td>
-					<td>graceful shutdown</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td><em>callback</em></td>
-		<td>&radic;</td>
-		<td>function</td>
-		<td>object with action result and <b><a href="#vpsactionstatus">planning_id</a></b></td>
-	</tr>
-</table>
+```
+Param      Type       Required   Description                          Example
+--------   --------   --------   ----------------------------------   -----------
+force      boolean    optional   True:  force shutdown                true
+                                 False: graceful shutdown (default)
+callback   function   required   object with action result            console.log
+```
 
 ```js
 directvps.vps( 123 ).shutdown( true, console.log )
 ```
+
 
 ## vps.reboot
 ### ( [force], callback )
 
 Reboot a server.
 
-<table>
-	<th>variable</th>
-	<th>required</th>
-	<th>type</th>
-	<th>description</th>
-	<tr>
-		<td>force</td>
-		<td></td>
-		<td>boolean</td>
-		<td>
-			<table>
-				<tr>
-					<td><b>true</b></td>
-					<td>force shutdown</td>
-				</tr>
-				<tr>
-					<td><b>false</b></td>
-					<td>graceful shutdown</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td><em>callback</em></td>
-		<td>&radic;</td>
-		<td>function</td>
-		<td>object with action result and <b><a href="#vpsactionstatus">planning_id</a></b></td>
-	</tr>
-</table>
+```
+Param      Type       Required   Description                          Example
+--------   --------   --------   --------------------------------   -----------
+force      boolean    optional   True:  force reboot                true
+                                 False: graceful reboot (default)
+callback   function   required   object with action result          console.log
+```
 
 ```js
 directvps.vps( 123 ).reboot( true, console.log )
@@ -452,22 +382,16 @@ directvps.vps( 123 ).reboot( true, console.log )
 
 Get a list of all backups for this server.
 
-<table>
-	<th>variable</th>
-	<th>required</th>
-	<th>type</th>
-	<th>description</th>
-	<tr>
-		<td><em>callback</em></td>
-		<td>&radic;</td>
-		<td>function</td>
-		<td>object with action result and <b><a href="#vpsactionstatus">planning_id</a></b></td>
-	</tr>
-</table>
+```
+Name       Type       Required   Description                 Example
+--------   --------   --------   -------------------------   -----------
+callback   function   required   Object with action result   console.log
+```
 
 ```js
 directvps.vps( 123 ).backups( console.log )
 ```
+
 ```js
 { '2345': 
    { einde: '2012-05-14 00:22:39',
@@ -485,29 +409,18 @@ directvps.vps( 123 ).backups( console.log )
      size: '1885186' } }
 ```
 
+
 ## vps.restore
 ### ( backupID, callback )
 
 Restore a backup.
 
-<table>
-	<th>variable</th>
-	<th>required</th>
-	<th>type</th>
-	<th>description</th>
-	<tr>
-		<td>backupID</td>
-		<td>&radic;</td>
-		<td>numeric</td>
-		<td>ID of the backup to restore</td>
-	</tr>
-	<tr>
-		<td><em>callback</em></td>
-		<td>&radic;</td>
-		<td>function</td>
-		<td>object with action result and <b><a href="#vpsactionstatus">planning_id</a></b></td>
-	</tr>
-</table>
+```
+Name       Type       Required   Description                 Example
+--------   --------   --------   -------------------------   -----------
+backupID   numeric    required   ID of backup to restore     1234567
+callback   function   required   Object with action result   console.log
+```
 
 ```js
 directvps.vps( 123 ).restore( 1234567, console.log )
@@ -524,26 +437,18 @@ directvps.vps( 123 ).restore( 1234567, console.log )
 
 Get details about one IP or all associated to this server.
 
-<table>
-	<th>variable</th>
-	<th>required</th>
-	<th>type</th>
-	<th>description</th>
-	<tr>
-		<td>ip</td>
-		<td></td>
-		<td>string</td>
-		<td>when provided details about one IPv4 address will be returned, when excluded the all IPv4 address and their details will be returned.</td>
-	</tr>
-	<tr>
-		<td><em>callback</em></td>
-		<td>&radic;</td>
-		<td>function</td>
-		<td>object with IP details</td>
-	</tr>
-</table>
+```
+Name       Type       Required   Description                         Example
+--------   --------   --------   ---------------------------------   -----------
+ip         string     optional   Include: get details about one IP   1.2.3.4
+                                 Exclude: get all IPs
+callback   function   required   Object with action result           console.log
+```
 
-# Unlicense
+
+Unlicense
+============================
+
 
 This is free and unencumbered software released into the public domain.
 
