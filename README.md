@@ -445,6 +445,19 @@ params     object     required   New server settings         {tag: 'test'}
 callback   function   required   Object with action result   console.log
 ```
 
+#### Parameters
+
+```
+Param      Type     Description
+--------   ------   -----------------------------------------------------
+tag        string   Label, vissible in vps.details and the Control Panel.
+password   string   Set default root password for next reinstall.
+sshkey     string   Set default SSH public-key for next reinstall.
+hostname   string   Set default hostname for next reinstall.
+```
+
+#### Example
+
 ```js
 directvps.vps( 123 ).update(
 	{
