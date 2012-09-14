@@ -450,6 +450,23 @@ directvps.vps( 123 ).upgradeProduct( 20, console.log )
 ```
 
 
+## vps.upgradeKernel
+### ( kernelID, callback )
+
+Change to another kernel. This will reboot the server, but all contents and OS should remain.
+
+```
+Name       Type       Required   Description                 Example
+--------   --------   --------   -------------------------   -----------
+kernelID   numeric    required   ID of new kernel            10
+callback   function   required   Object with action result   console.log
+```
+
+```js
+directvps.vps( 123 ).upgradeKernel( 10, console.log )
+```
+
+
 ## vps.ipv4
 ### ( [ip], callback )
 

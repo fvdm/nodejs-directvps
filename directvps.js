@@ -409,6 +409,11 @@ directvps.vps = function( vpsid ) {
 			directvps.vps( vpsid ).action( 13, productID, cb )
 		},
 		
+		// Upgrade kernel
+		upgradeKernel: function( kernelID, cb ) {
+			directvps.vps( vpsid ).action( 12, kernelID, cb )
+		},
+		
 		// Get IPv4 address
 		ipv4: function( ip, cb ) {
 			
