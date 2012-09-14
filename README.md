@@ -432,6 +432,24 @@ directvps.vps( 123 ).restore( 1234567, console.log )
   errormessage: '' }
 ```
 
+
+## vps.upgradeProduct
+### ( productID, callback )
+
+Upgrade the server to another product.
+
+```
+Name       Type       Required   Description                 Example
+---------   --------   --------   -------------------------   -----------
+productID   numeric    required   ID of new product           20
+callback    function   required   Object with action result   console.log
+```
+
+```js
+directvps.vps( 123 ).upgradeProduct( 20, console.log )
+```
+
+
 ## vps.ipv4
 ### ( [ip], callback )
 

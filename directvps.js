@@ -404,6 +404,11 @@ directvps.vps = function( vpsid ) {
 			directvps.get_backuplist( vpsid, cb )
 		},
 		
+		// Upgrade server
+		upgradeProduct: function( productID, cb ) {
+			directvps.vps( vpsid ).action( 13, productID, cb )
+		},
+		
 		// Get IPv4 address
 		ipv4: function( ip, cb ) {
 			
