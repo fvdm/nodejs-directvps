@@ -499,7 +499,7 @@ directvps.talk = function( type, path, fields, callback ) {
 		response.on( 'data', function( chunk ) { data += chunk });
 		response.on( 'end', function() {
 			
-			data.toString('utf8').trim()
+			data = data.toString('utf8').trim()
 			
 			// do callback if valid data
 			if( data.match( /^(\{.*\}|\[.*\])$/ ) ) {
