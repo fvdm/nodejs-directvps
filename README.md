@@ -433,6 +433,29 @@ directvps.vps( 123 ).restore( 1234567, console.log )
 ```
 
 
+## vps.update
+### ( params, callback )
+
+Change server settings. Set only the params you wish to edit.
+
+```
+Name       Type       Required   Description                 Example
+--------   --------   --------   -------------------------   -------------
+params     object     required   New server settings         {tag: 'test'}
+callback   function   required   Object with action result   console.log
+```
+
+```js
+directvps.vps( 123 ).update(
+	{
+		tag:      'test',
+		hostname: 'my.server.tld'
+	},
+	console.log
+)
+```
+
+
 ## vps.upgradeProduct
 ### ( productID, callback )
 
