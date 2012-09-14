@@ -484,6 +484,23 @@ directvps.vps( 123 ).reinstall( 28, console.log )
 ```
 
 
+## vps.installDirectadmin
+### ( licenseID, callback )
+
+Install DirectAdmin on the server.
+
+```
+Name       Type       Required   Description                 Example
+---------   --------   --------   -------------------------   -----------
+licenseID   numeric    required   DirectAdmin license ID      111222
+callback    function   required   Object with action result   console.log
+```
+
+```js
+directvps.vps( 123 ).installDirectadmin( 111222, console.log )
+```
+
+
 ## vps.ipv4
 ### ( [ip], callback )
 

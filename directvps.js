@@ -414,6 +414,11 @@ directvps.vps = function( vpsid ) {
 			directvps.vps( vpsid ).action( 12, kernelID, cb )
 		},
 		
+		// Install DirectAdmin
+		installDirectadmin: function( licenseID, cb ) {
+			directvps.vps( vpsid ).action( 11, licenseID, cb )
+		},
+		
 		// Reinstall OS
 		reinstall: function( imageID, cb ) {
 			directvps.vps( vpsid ).action( 6, imageID, cb )
