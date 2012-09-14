@@ -50,17 +50,16 @@ In order to use the API you need to have an API access private-key and certifica
 
 ## Variables
 
-```
-Name              Type      Description                          Example
----------------   -------   ----------------------------------   ---------
-privateKey        string    The private-key in plain text,
-certificate       string    The certificate in plain text.
-privateKeyFile    string    Path to the private-key file,        ~/api.key
-certificateFile   string    Path to certificate file,            ~/api.crt
-debug             boolean   Set debug mode. This will emit the   true
-                            debug event on all API calls.
-                            Default is 'false' to save memory.
-```
+
+    Name              Type      Description                          Example
+    ---------------   -------   ----------------------------------   ---------
+    privateKey        string    The private-key in plain text,
+    certificate       string    The certificate in plain text.
+    privateKeyFile    string    Path to the private-key file,        ~/api.key
+    certificateFile   string    Path to certificate file,            ~/api.crt
+    debug             boolean   Set debug mode. This will emit the   true
+                                debug event on all API calls.
+                                Default is 'false' to save memory.
 
 
 ## Load from files
@@ -190,13 +189,12 @@ Normal requested results are directly send to the associated *callback* function
 
 API communication failed.
 
-```
-Param     Description
--------   ------------------
-error     The error
-request   Request parameters
-fields    Data that was sent
-```
+
+    Param     Description
+    -------   ------------------
+    error     The error
+    request   Request parameters
+    fields    Data that was sent
 
 
 ```js
@@ -275,19 +273,19 @@ VPS
 ## vps.action
 ### ( actionID, [sub], [when], callback )
 
-```
-Name       Type       Required   Description                              Example
---------   --------   --------   --------------------------------------   ---------------
-actionID   string     required   ID or name of the action to run, best    12
-                                 is to provide an ID. Providing a name
-                                 would first request get_actionlist,
-                                 loop through the list lowercase
-                                 matching each description and finally
-                                 run the action.
-sub        string     optional   A value for some actions, 'product_id'   10
-when       string     optional   Schedule at date & time.                 2012-09-15 4:06
-callback   function   required   Receives result object.                  console.log
-```
+
+    Name       Type       Required   Description                              Example
+    --------   --------   --------   --------------------------------------   ---------------
+    actionID   string     required   ID or name of the action to run, best    12
+                                    is to provide an ID. Providing a name
+                                    would first request get_actionlist,
+                                    loop through the list lowercase
+                                    matching each description and finally
+                                    run the action.
+    sub        string     optional   A value for some actions, 'product_id'   10
+    when       string     optional   Schedule at date & time.                 2012-09-15 4:06
+    callback   function   required   Receives result object.                  console.log
+
 
 Possibilities:
 
@@ -307,12 +305,12 @@ directvps.vps( 123 ).action( 'shutdown', '01-01-2013 0:00', console.log )
 
 Get the status of the planned action.
 
-```
-Name         Type       Required   Description                            Example
-----------   --------   --------   ------------------------------------   -----------
-planningID   numeric    required   planning_id from 'vps.action'.         8765
-callback     function   required   Receives object with status details.   console.log
-```
+
+    Name         Type       Required   Description                            Example
+    ----------   --------   --------   ------------------------------------   -----------
+    planningID   numeric    required   planning_id from 'vps.action'.         8765
+    callback     function   required   Receives object with status details.   console.log
+
 
 ```js
 directvps.vps( 123 ).actionStatus( 8765, console.log )
@@ -331,11 +329,11 @@ directvps.vps( 123 ).actionStatus( 8765, console.log )
 
 Start a server (after installation or shutdown).
 
-```
-Name       Type       Required   Description                  Example
---------   --------   --------   --------------------------   -----------
-callback   function   required   Object with action result.   console.log
-```
+
+    Name       Type       Required   Description                  Example
+    --------   --------   --------   --------------------------   -----------
+    callback   function   required   Object with action result.   console.log
+
 
 ```js
 directvps.vps( 123 ).start( console.log )
@@ -347,13 +345,13 @@ directvps.vps( 123 ).start( console.log )
 
 Shutdown a server.
 
-```
-Param      Type       Required   Description                          Example
---------   --------   --------   ----------------------------------   -----------
-force      boolean    optional   True:  force shutdown                true
-                                 False: graceful shutdown (default)
-callback   function   required   object with action result            console.log
-```
+
+    Param      Type       Required   Description                          Example
+    --------   --------   --------   ----------------------------------   -----------
+    force      boolean    optional   True:  force shutdown                true
+                                    False: graceful shutdown (default)
+    callback   function   required   object with action result            console.log
+
 
 ```js
 directvps.vps( 123 ).shutdown( true, console.log )
@@ -365,13 +363,13 @@ directvps.vps( 123 ).shutdown( true, console.log )
 
 Reboot a server.
 
-```
-Param      Type       Required   Description                        Example
---------   --------   --------   --------------------------------   -----------
-force      boolean    optional   True:  force reboot                true
-                                 False: graceful reboot (default)
-callback   function   required   object with action result          console.log
-```
+
+    Param      Type       Required   Description                        Example
+    --------   --------   --------   --------------------------------   -----------
+    force      boolean    optional   True:  force reboot                true
+                                    False: graceful reboot (default)
+    callback   function   required   object with action result          console.log
+
 
 ```js
 directvps.vps( 123 ).reboot( true, console.log )
@@ -382,11 +380,11 @@ directvps.vps( 123 ).reboot( true, console.log )
 
 Get a list of all backups for this server.
 
-```
-Name       Type       Required   Description                 Example
---------   --------   --------   -------------------------   -----------
-callback   function   required   Object with action result   console.log
-```
+
+    Name       Type       Required   Description                 Example
+    --------   --------   --------   -------------------------   -----------
+    callback   function   required   Object with action result   console.log
+
 
 ```js
 directvps.vps( 123 ).backups( console.log )
@@ -415,12 +413,12 @@ directvps.vps( 123 ).backups( console.log )
 
 Restore a backup.
 
-```
-Name       Type       Required   Description                 Example
---------   --------   --------   -------------------------   -----------
-backupID   numeric    required   ID of backup to restore     1234567
-callback   function   required   Object with action result   console.log
-```
+
+    Name       Type       Required   Description                 Example
+    --------   --------   --------   -------------------------   -----------
+    backupID   numeric    required   ID of backup to restore     1234567
+    callback   function   required   Object with action result   console.log
+
 
 ```js
 directvps.vps( 123 ).restore( 1234567, console.log )
@@ -438,23 +436,23 @@ directvps.vps( 123 ).restore( 1234567, console.log )
 
 Change server settings. Set only the params you wish to edit.
 
-```
-Name       Type       Required   Description                 Example
---------   --------   --------   -------------------------   -------------
-params     object     required   New server settings         {tag: 'test'}
-callback   function   required   Object with action result   console.log
-```
+
+    Name       Type       Required   Description                 Example
+    --------   --------   --------   -------------------------   -------------
+    params     object     required   New server settings         {tag: 'test'}
+    callback   function   required   Object with action result   console.log
+
 
 #### Parameters
 
-```
-Param      Type     Description
---------   ------   -----------------------------------------------------
-tag        string   Label, vissible in vps.details and the Control Panel.
-password   string   Set default root password for next reinstall.
-sshkey     string   Set default SSH public-key for next reinstall.
-hostname   string   Set default hostname for next reinstall.
-```
+
+    Param      Type     Description
+    --------   ------   -----------------------------------------------------
+    tag        string   Label, vissible in vps.details and the Control Panel.
+    password   string   Set default root password for next reinstall.
+    sshkey     string   Set default SSH public-key for next reinstall.
+    hostname   string   Set default hostname for next reinstall.
+
 
 #### Example
 
@@ -474,12 +472,12 @@ directvps.vps( 123 ).update(
 
 Upgrade the server to another product.
 
-```
-Name       Type       Required   Description                 Example
----------   --------   --------   -------------------------   -----------
-productID   numeric    required   ID of new product           20
-callback    function   required   Object with action result   console.log
-```
+
+    Name       Type       Required   Description                 Example
+    ---------   --------   --------   -------------------------   -----------
+    productID   numeric    required   ID of new product           20
+    callback    function   required   Object with action result   console.log
+
 
 ```js
 directvps.vps( 123 ).upgradeProduct( 20, console.log )
@@ -491,12 +489,12 @@ directvps.vps( 123 ).upgradeProduct( 20, console.log )
 
 Change to another kernel. This will reboot the server, but all contents and OS should remain.
 
-```
-Name       Type       Required   Description                 Example
---------   --------   --------   -------------------------   -----------
-kernelID   numeric    required   ID of new kernel            10
-callback   function   required   Object with action result   console.log
-```
+
+    Name       Type       Required   Description                 Example
+    --------   --------   --------   -------------------------   -----------
+    kernelID   numeric    required   ID of new kernel            10
+    callback   function   required   Object with action result   console.log
+
 
 ```js
 directvps.vps( 123 ).upgradeKernel( 10, console.log )
@@ -508,12 +506,12 @@ directvps.vps( 123 ).upgradeKernel( 10, console.log )
 
 Perform a clean install of the choosen OS image.
 
-```
-Name       Type       Required   Description                 Example
---------   --------   --------   -------------------------   -----------
-imageID    numeric    required   ID of new OS image          28
-callback   function   required   Object with action result   console.log
-```
+
+    Name       Type       Required   Description                 Example
+    --------   --------   --------   -------------------------   -----------
+    imageID    numeric    required   ID of new OS image          28
+    callback   function   required   Object with action result   console.log
+
 
 ```js
 directvps.vps( 123 ).reinstall( 28, console.log )
@@ -525,12 +523,12 @@ directvps.vps( 123 ).reinstall( 28, console.log )
 
 Install DirectAdmin on the server.
 
-```
-Name       Type       Required   Description                  Example
----------   --------   --------   -------------------------   -----------
-licenseID   numeric    required   DirectAdmin license ID      111222
-callback    function   required   Object with action result   console.log
-```
+
+    Name        Type       Required   Description                 Example
+    ---------   --------   --------   -------------------------   -----------
+    licenseID   numeric    required   DirectAdmin license ID      111222
+    callback    function   required   Object with action result   console.log
+
 
 ```js
 directvps.vps( 123 ).installDirectadmin( 111222, console.log )
@@ -542,11 +540,11 @@ directvps.vps( 123 ).installDirectadmin( 111222, console.log )
 
 Add (buy) a DirectAdmin license for this server. This will *not* install DA on the server, use [vps.installDirectadmin](#vpsinstalldirectadmin) to perform the installation.
 
-```
-Name       Type       Required   Description                  Example
----------   --------   --------   -------------------------   -----------
-callback    function   required   Object with action result   console.log
-```
+
+    Name       Type       Required   Description                  Example
+    ---------   --------   --------   -------------------------   -----------
+    callback    function   required   Object with action result   console.log
+
 
 ```js
 directvps.vps( 123 ).addDirectadmin( 111222, console.log )
@@ -558,12 +556,12 @@ directvps.vps( 123 ).addDirectadmin( 111222, console.log )
 
 Delete a DirectAdmin license from this server.
 
-```
-Name       Type       Required   Description                  Example
----------   --------   --------   -------------------------   -----------
-licenseID   numeric    required   DirectAdmin license ID      111222
-callback    function   required   Object with action result   console.log
-```
+
+    Name        Type       Required   Description                 Example
+    ---------   --------   --------   -------------------------   -----------
+    licenseID   numeric    required   DirectAdmin license ID      111222
+    callback    function   required   Object with action result   console.log
+
 
 ```js
 directvps.vps( 123 ).deleteDirectadmin( 111222, console.log )
@@ -575,11 +573,11 @@ directvps.vps( 123 ).deleteDirectadmin( 111222, console.log )
 
 Add (buy) an IPv4 address to this server.
 
-```
-Name       Type       Required   Description                  Example
---------   --------   --------   --------------------------   -----------
-callback   function   required   Object with action result    console.log
-```
+
+    Name       Type       Required   Description                  Example
+    --------   --------   --------   --------------------------   -----------
+    callback   function   required   Object with action result    console.log
+
 
 ```js
 directvps.vps( 123 ).addIPv4( console.log )
@@ -591,13 +589,13 @@ directvps.vps( 123 ).addIPv4( console.log )
 
 Get details about one IP or all associated to this server.
 
-```
-Name       Type       Required   Description                         Example
---------   --------   --------   ---------------------------------   -----------
-ip         string     optional   Include: get details about one IP   1.2.3.4
-                                 Exclude: get all IPs
-callback   function   required   Object with action result           console.log
-```
+
+    Name       Type       Required   Description                         Example
+    --------   --------   --------   ---------------------------------   -----------
+    ip         string     optional   Include: get details about one IP   1.2.3.4
+                                    Exclude: get all IPs
+    callback   function   required   Object with action result           console.log
+
 
 #### Details about one IP
 
@@ -617,11 +615,11 @@ directvps.vps( 123 ).ipv4( console.log )
 
 Remove an IPv4 address from this server.
 
-```
-Name       Type       Required   Description          Example
---------   --------   --------   ------------------   -----------
-callback   function   required   Object with result   console.log
-```
+
+    Name       Type       Required   Description          Example
+    --------   --------   --------   ------------------   -----------
+    callback   function   required   Object with result   console.log
+
 
 ```js
 directvps.vps( 123 ).ipv4( '1.2.3.4' ).delete( console.log )
