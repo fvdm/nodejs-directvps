@@ -232,8 +232,8 @@ directvps.add_da = function( vpsid, callback ) {
 }
 
 // Delete DirectAdmin license
-directvps.del_da = function( set, callback ) {
-	directvps.talk( 'POST', 'del_da', set, callback )
+directvps.del_da = function( vpsid, licenseid, callback ) {
+	directvps.talk( 'POST', 'del_da', { vpsid: vpsid, lid: licenseid }, callback )
 }
 
 // Get IP reverse address
