@@ -28,10 +28,10 @@ OTHER DEALINGS IN THE SOFTWARE.
 For more information, please refer to <http://unlicense.org>
 */
 
-var	fs = require('fs'),
-	https = require('https'),
-	EventEmitter = require('events').EventEmitter,
-	querystring = require('querystring')
+var fs = require('fs'),
+    https = require('https'),
+    EventEmitter = require('events').EventEmitter,
+    querystring = require('querystring')
 
 // INIT
 var directvps = new EventEmitter()
@@ -509,23 +509,23 @@ directvps.talk = function( type, path, fields, callback ) {
 			if( directvps.settings.debug === true ) {
 				var debug = {
 					input: {
-						type:			type,
-						path:			path,
-						fields:			fields
+						type:		type,
+						path:		path,
+						fields:		fields
 					},
 					request:		options,
 					response: {
-						length:			data.length,
-						statusCode:		response.statusCode,
+						length:		data.length,
+						statusCode:	response.statusCode,
 						httpVersion:	response.httpVersion,
-						headers:		response.headers,
-						body:			data
+						headers:	response.headers,
+						body:		data
 					}
 				}
 				
 				// replace security credentials with hashes
-				var	keyc = require('crypto').createHash('sha1'),
-					crtc = require('crypto').createHash('sha1')
+				var keyc = require('crypto').createHash('sha1'),
+				    crtc = require('crypto').createHash('sha1')
 				
 				debug.request.key = keyc.update( directvps.settings.privateKey ).digest('hex')
 				debug.request.cert = crtc.update( directvps.settings.certificate ).digest('hex')
