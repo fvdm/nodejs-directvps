@@ -501,6 +501,22 @@ directvps.vps( 123 ).installDirectadmin( 111222, console.log )
 ```
 
 
+## vps.addDirectadmin
+### ( licenseID, callback )
+
+Add (buy) a DirectAdmin license for this server. This will *not* install DA on the server, use [vps.installDirectadmin](#vpsinstalldirectadmin) to perform the installation.
+
+```
+Name       Type       Required   Description                  Example
+---------   --------   --------   -------------------------   -----------
+callback    function   required   Object with action result   console.log
+```
+
+```js
+directvps.vps( 123 ).addDirectadmin( 111222, console.log )
+```
+
+
 ## vps.addIPv4
 ### ( callback )
 
