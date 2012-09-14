@@ -222,8 +222,8 @@ directvps.add_ipv4 = function( vpsid, callback ) {
 }
 
 // Delete IPv4 address
-directvps.del_ipv4 = function( set, callback ) {
-	directvps.talk( 'POST', 'del_ipv4', set, callback )
+directvps.del_ipv4 = function( vpsid, ipv4, callback ) {
+	directvps.talk( 'POST', 'del_ipv4', { vpsid: vpsid, ipv4: ipv4 }, callback )
 }
 
 // Add DirectAdmin license
