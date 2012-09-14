@@ -492,14 +492,11 @@ directvps.talk = function( type, path, fields, callback ) {
 	var req = https.request( options, function( response ) {
 			
 		// response
-		response.setEncoding('utf8')
 		var data = ''
-		
 		response.on( 'data', function( chunk ) { data += chunk });
 		response.on( 'end', function() {
 			
-			// cleanup
-			data = data.trim()
+			data.toString('utf8').trim()
 			
 			// do callback if valid data
 			var	first = data.substr(0,1),
