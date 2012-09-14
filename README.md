@@ -501,6 +501,22 @@ directvps.vps( 123 ).installDirectadmin( 111222, console.log )
 ```
 
 
+## vps.addIPv4
+### ( callback )
+
+Add (buy) an IPv4 address to this server.
+
+```
+Name       Type       Required   Description                  Example
+--------   --------   --------   --------------------------   -----------
+callback   function   required   Object with action result    console.log
+```
+
+```js
+directvps.vps( 123 ).addIPv4( console.log )
+```
+
+
 ## vps.ipv4
 ### ( [ip], callback )
 

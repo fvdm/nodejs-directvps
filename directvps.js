@@ -424,6 +424,11 @@ directvps.vps = function( vpsid ) {
 			directvps.vps( vpsid ).action( 6, imageID, cb )
 		},
 		
+		// Add (buy) an IPv4 address
+		addIPv4: function( cb ) {
+			directvps.add_ipv4( vpsid, cb )
+		},
+		
 		// Get IPv4 address
 		ipv4: function( ip, cb ) {
 			
