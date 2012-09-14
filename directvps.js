@@ -237,8 +237,8 @@ directvps.del_da = function( vpsid, licenseid, callback ) {
 }
 
 // Get IP reverse address
-directvps.get_reverse = function( set, callback ) {
-	directvps.talk( 'POST', 'get_reverse', set, callback )
+directvps.get_reverse = function( vpsid, ipv4, callback ) {
+	directvps.talk( 'POST', 'get_reverse', { vpsid: vpsid, ipv4: ipv4 }, callback )
 }
 
 // Edit IP reverse address
@@ -470,7 +470,7 @@ directvps.vps = function( vpsid ) {
 						
 						// get
 						var cb = name
-						directvps.get_reverse({ vpsid: vpsid, ipv4: ip }, cb )
+						directvps.get_reverse( vpsid, ip, cb )
 						
 					} else {
 						
