@@ -366,7 +366,7 @@ directvps.vps( 123 ).shutdown( true, console.log )
 Reboot a server.
 
 ```
-Param      Type       Required   Description                          Example
+Param      Type       Required   Description                        Example
 --------   --------   --------   --------------------------------   -----------
 force      boolean    optional   True:  force reboot                true
                                  False: graceful reboot (default)
