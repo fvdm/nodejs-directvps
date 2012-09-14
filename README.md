@@ -527,6 +527,22 @@ directvps.vps( 123 ).ipv4( console.log )
 ```
 
 
+## vps.ipv4.delete
+### ( callback )
+
+Remove an IPv4 address from this server.
+
+```
+Name       Type       Required   Description          Example
+--------   --------   --------   ------------------   -----------
+callback   function   required   Object with result   console.log
+```
+
+```js
+directvps.vps( 123 ).ipv4( '1.2.3.4' ).delete( console.log )
+```
+
+
 Unlicense
 ============================
 

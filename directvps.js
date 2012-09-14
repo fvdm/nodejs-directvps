@@ -467,6 +467,11 @@ directvps.vps = function( vpsid ) {
 						}, cb )
 						
 					}
+				},
+				
+				// delete an IPv4 address from server
+				delete: function( cb ) {
+					directvps.del_ipv4( vpsid, ip, cb )
 				}
 				
 			}
