@@ -467,6 +467,23 @@ directvps.vps( 123 ).upgradeKernel( 10, console.log )
 ```
 
 
+## vps.reinstall
+### ( imageID, callback )
+
+Perform a clean install of the choosen OS image.
+
+```
+Name       Type       Required   Description                 Example
+--------   --------   --------   -------------------------   -----------
+imageID    numeric    required   ID of new OS image          28
+callback   function   required   Object with action result   console.log
+```
+
+```js
+directvps.vps( 123 ).reinstall( 28, console.log )
+```
+
+
 ## vps.ipv4
 ### ( [ip], callback )
 

@@ -414,6 +414,11 @@ directvps.vps = function( vpsid ) {
 			directvps.vps( vpsid ).action( 12, kernelID, cb )
 		},
 		
+		// Reinstall OS
+		reinstall: function( imageID, cb ) {
+			directvps.vps( vpsid ).action( 6, imageID, cb )
+		},
+		
 		// Get IPv4 address
 		ipv4: function( ip, cb ) {
 			
