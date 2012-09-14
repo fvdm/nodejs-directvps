@@ -5,8 +5,8 @@
     "url":                "http://frankl.in"
   },
   "name":                 "directvps",
-  "description":          "Access the DirectVPS API",
-  "version":              "0.2.1",
+  "description":          "Unofficial DirectVPS API module",
+  "version":              "0.3.0",
   "repository": {
     "type":               "git",
     "url":                "git://github.com/fvdm/nodejs-directvps.git"
@@ -21,7 +21,7 @@
   "engines": {
     "node":               "*"
   },
-  "keywords":             ["directvps", "api", "middleware", "vps", "servers"],
+  "keywords":             ["directvps", "api", "vps", "servers"],
   "license": {
     "type":               "Public Domain",
     "url":                "https://github.com/fvdm/nodejs-directvps/raw/master/UNLICENSE"
