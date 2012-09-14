@@ -499,15 +499,10 @@ directvps.talk = function( type, path, fields, callback ) {
 			data.toString('utf8').trim()
 			
 			// do callback if valid data
-			var	first = data.substr(0,1),
-				last = data.substr( data.length -1, 1 )
-			
-			if( (first == '[' && last == ']') || (first == '{' && last == '}') ) {
+			if( data.match( /^(\{.*\}|\[.*\])$/ ) ) {
 				callback( JSON.parse( data ) )
 			} else {
-				directvps.emit( 'fail', {
-					'reason':	'not json'
-				})
+				directvps.emit( 'fail', {'reason': 'not json'} )
 			}
 			
 			// emit debug data
