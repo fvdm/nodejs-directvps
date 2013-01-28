@@ -456,9 +456,22 @@ directvps.vps = function( vpsid ) {
 			return {
 				
 				// simple details
-				details: function( cb ) {
+				details: function( reverse, cb ) {
+					if( typeof reverse === 'function' ) {
+						var cb = reverse
+						var reverse = false
+					}
+					
 					directvps.get_ipv4( vpsid, function( ips ) {
-						cb( ips[ ip ] )
+						if( reverse ) {
+							directvps.get_reverse( vpsid, ip, function( rev ) {
+								var res = ips[ ip ]
+								res.reverse = rev[0].reverse
+								cb( res )
+							})
+						} else {
+							cb( ips[ ip ] )
+						}
 					})
 				},
 				
