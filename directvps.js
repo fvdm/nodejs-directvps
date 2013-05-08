@@ -344,6 +344,24 @@ directvps.get_traffic = function( vpsid, callback ) {
 	})
 }
 
+// Action log
+directvps.get_actionlog = function( vpsid, callback ) {
+	directvps.talk( 'POST', 'get_actionlog', {vpsid: vpsid}, function( err, res ) {
+		var result = null
+		if( ! err ) {
+			var result = {}
+			if( res[0].error == '0' && res[0].actionlog[0].planningid !== undefined ) {
+				for( var ai in res[0].actionlog ) {
+					var action = res[0].actionlog[ai]
+					result[ action.planningid ] = action
+				}
+			}
+		}
+		
+		callback( err, result )
+	})
+}
+
 
 ///////////////
 // Shorthand //
