@@ -107,6 +107,22 @@ directvps.get_isolist = function( callback ) {
 	}
 }
 
+// Get boot orders
+directvps.get_bootorderlist = function( callback ) {
+	directvps.talk( 'GET', 'get_bootorderlist', function( err, res ) {
+		var orders = null
+		if( ! err ) {
+			var orders = {}
+			for( var o in res ) {
+				var order = res[o]
+				orders[ order.bootorderid ] = order
+			}
+		}
+		
+		callback( err, orders )
+	})
+}
+
 // Get images
 directvps.get_imagelist = function( callback ) {
 	directvps.talk( 'GET', 'get_imagelist', function( err, res ) {
