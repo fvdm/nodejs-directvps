@@ -12,9 +12,8 @@ Installation
 
 To install the module from the NPM repository run this:
 
-```
-npm install directvps
-```
+	npm install directvps
+	
 
 And then link inside your code with:
 
@@ -27,9 +26,8 @@ var directvps = require('directvps')
 
 Or install directly from Github source:
 
-```
-git clone https://github.com/fvdm/nodejs-directvps.git
-```
+	git clone https://github.com/fvdm/nodejs-directvps.git
+
 
 And load in your code:
 
@@ -86,9 +84,7 @@ Usage
 
 This module is event based, meaning all functions require a **callback** function parameter to process the result. All methods from the API are implemented directly, but for VPS specific methods a shorthand is also available. The two samples below highlight both methods. 
 
-All *boolean* parameters can also be strings: true/false, yes/no, 1/0.
-
-**The exsamples below are based on the NPM install. If you rather directly use the source file use the *require()* replacement above.**
+**The examples below are based on the NPM install. If you rather directly use the source file use the *require()* replacement above.**
 
 
 ### Direct method
