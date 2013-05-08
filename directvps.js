@@ -33,11 +33,10 @@ For more information, please refer to <http://unlicense.org>
 
 var fs = require('fs'),
     https = require('https'),
-    EventEmitter = require('events').EventEmitter,
     querystring = require('querystring')
 
 // INIT
-var directvps = new EventEmitter()
+var directvps = {}
 
 directvps.settings = {
 	apiVersion:	1,
