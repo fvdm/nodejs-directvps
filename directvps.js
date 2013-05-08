@@ -631,6 +631,9 @@ directvps.talk = function( type, path, fields, callback ) {
 			} else {
 				err = new Error('not json')
 				err.details = data
+				err.responseCode = response.statusCode
+				err.responseHeaders = response.headers
+				err.responseBody = data
 				doCallback( err )
 			}
 		})
