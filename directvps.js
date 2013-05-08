@@ -91,6 +91,22 @@ directvps.get_productlist = function( callback ) {
 	})
 }
 
+// Get ISOs
+directvps.get_isolist = function( callback ) {
+	directvps.talk( 'GET', 'get_isolist', function( err, res ) {
+		var isos = null
+		if( ! err ) {
+			var isos = {}
+			for( var i in res ) {
+				var iso = res[i]
+				isos[ iso.isoid ] = iso
+			}
+		})
+		
+		callback( err, isos )
+	}
+}
+
 // Get images
 directvps.get_imagelist = function( callback ) {
 	directvps.talk( 'GET', 'get_imagelist', function( err, res ) {
