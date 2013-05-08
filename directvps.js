@@ -78,13 +78,16 @@ directvps.get_accountdata = function( callback ) {
 
 // Get products
 directvps.get_productlist = function( callback ) {
-		var products = {}
-		for( var p in res ) {
-			var product = res[p]
-			products[ product.productid ] = product
 	directvps.talk( 'GET', 'get_productlist', function( err, res ) {
+		var products = null
+		if( ! err ) {
+			var products = {}
+			for( var p in res ) {
+				var product = res[p]
+				products[ product.productid ] = product
+			}
 		}
-		callback( products )
+		callback( err, products )
 	})
 }
 
