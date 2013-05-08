@@ -280,9 +280,7 @@ directvps.get_traffic = function( vpsid, callback ) {
 
 // VPS stuff
 directvps.vps = function( vpsid ) {
-	
 	return {
-		
 		// info
 		details: function( cb ) {
 			directvps.get_vpslist( function( list ) {
@@ -443,7 +441,6 @@ directvps.vps = function( vpsid ) {
 		
 		// Get IPv4 address
 		ipv4: function( ip, cb ) {
-			
 			if( !cb && typeof ip == 'function' ) {
 				
 				// list
@@ -458,7 +455,6 @@ directvps.vps = function( vpsid ) {
 			}
 			
 			return {
-				
 				// simple details
 				details: function( reverse, cb ) {
 					if( typeof reverse === 'function' ) {
@@ -499,13 +495,9 @@ directvps.vps = function( vpsid ) {
 				delete: function( cb ) {
 					directvps.del_ipv4( vpsid, ip, cb )
 				}
-				
 			}
-			
 		}
-		
 	}
-	
 }
 
 
@@ -541,14 +533,14 @@ directvps.talk = function( type, path, fields, callback ) {
 	}
 	
 	var options = {
-		host:		'api.directvps.nl',
-		port:		443,
-		path:		'/'+ directvps.settings.apiVersion +'/'+ path,
-		method:		type,
-		headers:	headers,
-		key:		directvps.settings.privateKey,
-		cert:		directvps.settings.certificate,
-		agent:		false,
+		host:			'api.directvps.nl',
+		port:			443,
+		path:			'/'+ directvps.settings.apiVersion +'/'+ path,
+		method:			type,
+		headers:		headers,
+		key:			directvps.settings.privateKey,
+		cert:			directvps.settings.certificate,
+		agent:			false,
 		rejectUnauthorized:	directvps.settings.verifyCert
 	}
 	
@@ -559,7 +551,6 @@ directvps.talk = function( type, path, fields, callback ) {
 		var data = ''
 		response.on( 'data', function( chunk ) { data += chunk })
 		response.on( 'end', function() {
-			
 			data = data.toString('utf8').trim()
 			
 			// do callback if valid data
@@ -571,7 +562,6 @@ directvps.talk = function( type, path, fields, callback ) {
 				doCallback( err )
 			}
 		})
-		
 	})
 	
 	// error
@@ -589,7 +579,6 @@ directvps.talk = function( type, path, fields, callback ) {
 	}
 	
 	req.end()
-	
 }
 
 // Ready
