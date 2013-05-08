@@ -76,6 +76,11 @@ directvps.get_accountdata = function( callback ) {
 	directvps.talk( 'GET', 'get_accountdata', callback )
 }
 
+// Update account details
+directvps.edit_accountdata = function( vars, callback ) {
+	directvps.talk( 'POST', 'edit_accountdata', vars, callback )
+}
+
 // Get products
 directvps.get_productlist = function( callback ) {
 	directvps.talk( 'GET', 'get_productlist', function( err, res ) {
