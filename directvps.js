@@ -298,6 +298,23 @@ directvps.del_ipv4 = function( vpsid, ipv4, callback ) {
 	directvps.talk( 'POST', 'del_ipv4', { vpsid: vpsid, ipv4: ipv4 }, callback )
 }
 
+// Get IPv6 addresses
+directvps.get_ipv6 = function( vpsid, callback ) {
+	directvps.talk( 'POST', 'get_ipv6', {vpsid: vpsid}, function( err, res ) {
+		var ips = null
+		if( ! err ) {
+			var ips = {}
+			for( var i in res[0].ip ) {
+				var ip = res[0].ip[i]
+				ip.typeLabel = ip.type == '1' ? 'primary' : 'secondary'
+				ips[ ip.ip ] = ip
+			}
+		}
+		
+		callback( err, ips )
+	})
+}
+
 // Add DirectAdmin license
 directvps.add_da = function( vpsid, callback ) {
 	directvps.talk( 'POST', 'add_da', { vpsid: vpsid }, callback )
