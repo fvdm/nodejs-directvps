@@ -525,7 +525,7 @@ directvps.talk = function( type, path, fields, callback ) {
 	if( type == 'POST' ) {
 		var query = []
 		query.push( fields )
-		var querystr = 'json='+ escape( JSON.stringify( query ) )
+		var querystr = 'json='+ JSON.stringify( query )
 		
 		headers['Content-Type']		= 'application/json'
 		headers['Content-Length']	= querystr.length
