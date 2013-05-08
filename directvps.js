@@ -318,7 +318,11 @@ directvps.vps = function( vpsid ) {
 		// info
 		details: function( cb ) {
 			directvps.get_vpslist( function( err, list ) {
-				cb( list[ vpsid ] )
+				if( ! err ) {
+					cb( null, list[ vpsid ] )
+				} else {
+					cb( err )
+				}
 			})
 		},
 		
