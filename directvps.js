@@ -371,15 +371,19 @@ directvps.vps = function( vpsid ) {
 				
 				// name, get all actions
 				directvps.get_actionlist( function( err, actions ) {
-					for( var a in actions ) {
-						if( actions[a].omschrijving.toLowerCase() == nameid ) {
-							
-							// found the one
-							vars.actionid = actions[a].actionid
-							directvps.add_action( vars, cb )
-							break
-							
+					if( ! err ) {
+						for( var a in actions ) {
+							if( actions[a].omschrijving.toLowerCase() == nameid ) {
+								
+								// found the one
+								vars.actionid = actions[a].actionid
+								directvps.add_action( vars, cb )
+								break
+								
+							}
 						}
+					} else {
+						cb( err )
 					}
 				})
 				
