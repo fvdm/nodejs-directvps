@@ -188,15 +188,16 @@ directvps.get_statuslist = function( callback ) {
 // Get VPS list
 directvps.get_vpslist = function( callback ) {
 	directvps.talk( 'GET', 'get_vpslist', function( err, res ) {
-		var servers = {}
-		for( var s in res ) {
-			var server = res[s]
-			servers[ server.vpsid ] = server
+		var servers = null
+		if( ! err ) {
+			var servers = {}
+			for( var s in res ) {
+				var server = res[s]
+				servers[ server.vpsid ] = server
+			}
 		}
 		
-		if( typeof callback == 'function' ) {
-			callback( servers )
-		}
+		callback( err, servers )
 	})
 }
 
