@@ -609,6 +609,11 @@ directvps.talk = function( type, path, fields, callback ) {
 			data.push( chunk )
 			size += chunk.length
 		})
+		
+		response.on( 'close', function() {
+			doCallback( new Error('connection closed') )
+		})
+		
 		response.on( 'end', function() {
 			var buf = new Buffer( size )
 			var pos = 0
