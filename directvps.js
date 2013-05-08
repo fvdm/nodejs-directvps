@@ -141,12 +141,16 @@ directvps.get_kernellist = function( callback ) {
 // Get locations
 directvps.get_locationlist = function( callback ) {
 	directvps.talk( 'GET', 'get_locationlist', function( err, res ) {
-		var locations = {}
-		for( var l in res ) {
-			var location = res[l]
-			locations[ location.locationid ] = location
+		var locations = null
+		if( ! err ) {
+			var locations = {}
+			for( var l in res ) {
+				var location = res[l]
+				locations[ location.locationid ] = location
+			}
 		}
-		callback( locations )
+		
+		callback( err, locations )
 	})
 }
 
