@@ -204,11 +204,15 @@ directvps.get_vpslist = function( callback ) {
 // Get backups
 directvps.get_backuplist = function( vpsid, callback ) {
 	directvps.talk( 'POST', 'get_backuplist', { vpsid: vpsid }, function( err, res ) {
-		var backups = {}
-		for( var b in res[0].backup ) {
-			backups[ res[0].backup[b].backupid ] = res[0].backup[b]
+		var backups = null
+		if( ! err ) {
+			var backups = {}
+			for( var b in res[0].backup ) {
+				backups[ res[0].backup[b].backupid ] = res[0].backup[b]
+			}
 		}
-		callback( backups )
+		
+		callback( err, backups )
 	})
 }
 
