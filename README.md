@@ -171,41 +171,6 @@ directvps.get_vpslist( function( servers ) {
 ```
 
 
-Events
-============================
-
-
-Normal requested results are directly send to the associated *callback* function, but some others have their own event hooks:
-
-
-## fail
-### ( error, request, fields )
-
-API communication failed.
-
-
-    Param     Description
-    -------   ------------------
-    error     The error
-    request   Request parameters
-    fields    Data that was sent
-
-
-```js
-directvps.on( 'fail', console.log )
-```
-
-
-## fatal
-### ( reason )
-
-Something went wrong and the process is about to be destroyed.
-
-```js
-directvps.on( 'fatal', console.log )
-```
-
-
 VPS
 ============================
 
