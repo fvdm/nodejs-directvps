@@ -34,7 +34,7 @@ git clone https://github.com/fvdm/nodejs-directvps.git
 And load in your code:
 
 ```js
-var directvps = require('/path/to/nodejs-directvps/directvps.js')
+var directvps = require('/path/to/nodejs-directvps')
 ```
 
 
