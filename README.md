@@ -54,9 +54,6 @@ In order to use the API you need to have an API access private-key and certifica
     certificate       string    The certificate in plain text.
     privateKeyFile    string    Path to the private-key file,        ~/api.key
     certificateFile   string    Path to certificate file,            ~/api.crt
-    debug             boolean   Set debug mode. This will emit the   true
-                                debug event on all API calls.
-                                Default is 'false' to save memory.
 
 
 ## Load from files
@@ -206,60 +203,6 @@ Something went wrong and the process is about to be destroyed.
 
 ```js
 directvps.on( 'fatal', console.log )
-```
-
-
-## debug
-### ( details )
-
-There is a debug mode built in which allows you to monitor all API communication in detail. It returns *talk()* input parameters, request options and API response details.
-
-**To save memory debug-mode is inactive by default, therefore you must set _debug_ to _true_ in the settings to activate this event:**
-* **in setup:** directvps.setup({ debug: true })
-* **manually:** directvps.settings.debug = true
-
-**NOTE:** in the debug *request* element your **key** (private-key) and **cert** (certificate) are replaced with their sha1 hashes for security. This way you can compare them with the ones you intended to use without them ending up in the wrong hands.
-
-```js
-directvps.on( 'debug', console.log )
-```
-
-```js
-{ input: 
-   { type: 'POST',
-     path: 'edit_reverse',
-     fields: 
-      { vpsid: 123,
-        ipv4: '178.21.12.34',
-        reverse: 'example.tld' } },
-  request: 
-   { host: 'api.directvps.nl',
-     port: 443,
-     path: '/1/edit_reverse',
-     method: 'POST',
-     headers: 
-      { Accept: 'application/json',
-        'User-Agent': 'directvps.js (https://github.com/fvdm/nodejs-directvps)',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Content-Length': 116 },
-     key: 'f1d2d2f924e986ac86fdf7b36c94bcdf32beec15',
-     cert: 'e242ed3bffccdf271b7fbaf34ed72d089537b42f',
-     agent: false,
-     createConnection: [Function: createConnection],
-     defaultPort: 443,
-     setHost: true },
-  response: 
-   { length: 209,
-     statusCode: 200,
-     httpVersion: '1.1',
-     headers: 
-      { date: 'Fri, 15 Jun 2012 12:11:09 GMT',
-        server: 'Apache/2.2.16 (Debian)',
-        'x-plp-version': '3.23',
-        connection: 'close',
-        'transfer-encoding': 'chunked',
-        'content-type': 'application/json' },
-     body: '[..]' } }
 ```
 
 
