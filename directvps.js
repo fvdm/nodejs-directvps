@@ -68,7 +68,7 @@ directvps.setup = function( vars ) {
 	directvps.settings.debug = vars.debug === true ? true : false
 	
 	// certificate verification
-	directvps.settings.verifyCert = vars.verifyCert === true : true : false
+	directvps.settings.verifyCert = vars.verifyCert === true ? true : false
 	
 }
 
