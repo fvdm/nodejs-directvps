@@ -289,8 +289,13 @@ directvps.get_ipv4 = function( vpsid, callback ) {
 }
 
 // Add (buy) IPv4 address
-directvps.add_ipv4 = function( vpsid, callback ) {
-	directvps.talk( 'POST', 'add_ipv4', { vpsid: vpsid }, callback )
+directvps.add_ipv4 = function( vpsid, reverse, callback ) {
+	if( typeof reverse === 'function' ) {
+		var callback = reverse
+		var reverse = ''
+	}
+	
+	directvps.talk( 'POST', 'add_ipv4', { vpsid: vpsid, reverse: reverse }, callback )
 }
 
 // Delete IPv4 address
