@@ -40,7 +40,6 @@ var directvps = {}
 
 directvps.settings = {
 	apiVersion:	1,
-	debug:		false,
 	verifyCert:	false
 }
 
@@ -62,9 +61,6 @@ directvps.setup = function( vars ) {
 	else if( vars.certificate ) {
 		directvps.settings.certificate = vars.certificate
 	}
-	
-	// set debug mode
-	directvps.settings.debug = vars.debug === true ? true : false
 	
 	// certificate verification
 	directvps.settings.verifyCert = vars.verifyCert === true ? true : false
@@ -572,36 +568,6 @@ directvps.talk = function( type, path, fields, callback ) {
 			} else {
 				directvps.emit( 'fail', {'reason': 'not json'} )
 			}
-			
-			// emit debug data
-			if( directvps.settings.debug === true ) {
-				var debug = {
-					input: {
-						type:		type,
-						path:		path,
-						fields:		fields
-					},
-					request:		options,
-					response: {
-						length:		data.length,
-						statusCode:	response.statusCode,
-						httpVersion:	response.httpVersion,
-						headers:	response.headers,
-						body:		data
-					}
-				}
-				
-				// replace security credentials with hashes
-				var keyc = require('crypto').createHash('sha1'),
-				    crtc = require('crypto').createHash('sha1')
-				
-				debug.request.key = keyc.update( directvps.settings.privateKey ).digest('hex')
-				debug.request.cert = crtc.update( directvps.settings.certificate ).digest('hex')
-				
-				// send event
-				directvps.emit( 'debug', debug )
-			}
-			
 		})
 		
 	})
