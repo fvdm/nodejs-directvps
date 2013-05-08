@@ -83,7 +83,7 @@ directvps.get_accountdata = function( callback ) {
 
 // Get products
 directvps.get_productlist = function( callback ) {
-	directvps.talk( 'GET', 'get_productlist', {}, function( res ) {
+	directvps.talk( 'GET', 'get_productlist', function( res ) {
 		var products = {}
 		for( var p in res ) {
 			var product = res[p]
@@ -95,7 +95,7 @@ directvps.get_productlist = function( callback ) {
 
 // Get images
 directvps.get_imagelist = function( callback ) {
-	directvps.talk( 'GET', 'get_imagelist', {}, function( res ) {
+	directvps.talk( 'GET', 'get_imagelist', function( res ) {
 		var images = {},
 		    versions = {}
 		
@@ -123,7 +123,7 @@ directvps.get_imagelist = function( callback ) {
 
 // Get kernels
 directvps.get_kernellist = function( callback ) {
-	directvps.talk( 'GET', 'get_kernellist', {}, function( res ) {
+	directvps.talk( 'GET', 'get_kernellist', function( res ) {
 		var kernels = {}
 		for( var k in res ) {
 			var kernel = res[k]
@@ -135,7 +135,7 @@ directvps.get_kernellist = function( callback ) {
 
 // Get locations
 directvps.get_locationlist = function( callback ) {
-	directvps.talk( 'GET', 'get_locationlist', {}, function( res ) {
+	directvps.talk( 'GET', 'get_locationlist', function( res ) {
 		var locations = {}
 		for( var l in res ) {
 			var location = res[l]
@@ -147,7 +147,7 @@ directvps.get_locationlist = function( callback ) {
 
 // Get actions
 directvps.get_actionlist = function( callback ) {
-	directvps.talk( 'GET', 'get_actionlist', {}, function( res ) {
+	directvps.talk( 'GET', 'get_actionlist', function( res ) {
 		var actions = {}
 		for( var a in res ) {
 			var action = res[a]
@@ -159,7 +159,7 @@ directvps.get_actionlist = function( callback ) {
 
 // Get statuses
 directvps.get_statuslist = function( callback ) {
-	directvps.talk( 'GET', 'get_statuslist', {}, function( res ) {
+	directvps.talk( 'GET', 'get_statuslist', function( res ) {
 		var statuses = {}
 		for( var s in res ) {
 			statuses[ res[s].statusid ] = res[s]
@@ -170,7 +170,7 @@ directvps.get_statuslist = function( callback ) {
 
 // Get VPS list
 directvps.get_vpslist = function( callback ) {
-	directvps.talk( 'GET', 'get_vpslist', {}, function( res ) {
+	directvps.talk( 'GET', 'get_vpslist', function( res ) {
 		var servers = {}
 		for( var s in res ) {
 			var server = res[s]
@@ -520,6 +520,11 @@ directvps.vps = function( vpsid ) {
 
 // API communication
 directvps.talk = function( type, path, fields, callback ) {
+	
+	if( typeof fields === 'function' ) {
+		var callback = fields
+		var fields = {}
+	}
 	
 	// prepare
 	var headers = {
