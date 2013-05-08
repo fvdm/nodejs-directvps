@@ -289,18 +289,21 @@ directvps.add_vps = function( set, callback ) {
 // Traffic
 directvps.get_traffic = function( vpsid, callback ) {
 	directvps.talk( 'POST', 'get_traffic', { vpsid: vpsid }, function( err, res ) {
-		var result = {}
-		if( res[0].error == '0' && res[0].traffic[0].jaar !== undefined ) {
-			for( var ti in res[0].traffic ) {
-				var t = res[0].traffic[ti]
-				if( result[ t.jaar ] === undefined ) {
-					result[ t.jaar ] = {}
+		var result = null
+		if( ! err ) {
+			var result = {}
+			if( res[0].error == '0' && res[0].traffic[0].jaar !== undefined ) {
+				for( var ti in res[0].traffic ) {
+					var t = res[0].traffic[ti]
+					if( result[ t.jaar ] === undefined ) {
+						result[ t.jaar ] = {}
+					}
+					result[ t.jaar ][ t.maand ] = t
 				}
-				result[ t.jaar ][ t.maand ] = t
 			}
 		}
 		
-		callback( result )
+		callback( err, result )
 	})
 }
 
