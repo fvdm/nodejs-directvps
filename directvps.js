@@ -520,6 +520,15 @@ directvps.vps = function( vpsid ) {
 // API communication
 directvps.talk = function( type, path, fields, callback ) {
 	
+	// prevent multiple callbacks
+	var complete = false
+	function doCallback( err, res ) {
+		if( ! complete ) {
+			complete = true
+			callback( err, res )
+		}
+	}
+		
 	// prepare
 	var headers = {
 		'Accept':	'application/json',
@@ -559,7 +568,7 @@ directvps.talk = function( type, path, fields, callback ) {
 			
 			// do callback if valid data
 			if( data.match( /^(\{.*\}|\[.*\])$/ ) ) {
-				callback( JSON.parse( data ) )
+				doCallback( null, JSON.parse( data ) )
 			} else {
 				directvps.emit( 'fail', {'reason': 'not json'} )
 			}
