@@ -566,7 +566,9 @@ directvps.talk = function( type, path, fields, callback ) {
 			if( data.match( /^(\{.*\}|\[.*\])$/ ) ) {
 				doCallback( null, JSON.parse( data ) )
 			} else {
-				directvps.emit( 'fail', {'reason': 'not json'} )
+				err = new Error('not json')
+				err.details = data
+				doCallback( err )
 			}
 		})
 		
