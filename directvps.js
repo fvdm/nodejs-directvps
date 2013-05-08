@@ -78,11 +78,11 @@ directvps.get_accountdata = function( callback ) {
 
 // Get products
 directvps.get_productlist = function( callback ) {
-	directvps.talk( 'GET', 'get_productlist', function( res ) {
 		var products = {}
 		for( var p in res ) {
 			var product = res[p]
 			products[ product.productid ] = product
+	directvps.talk( 'GET', 'get_productlist', function( err, res ) {
 		}
 		callback( products )
 	})
@@ -90,7 +90,7 @@ directvps.get_productlist = function( callback ) {
 
 // Get images
 directvps.get_imagelist = function( callback ) {
-	directvps.talk( 'GET', 'get_imagelist', function( res ) {
+	directvps.talk( 'GET', 'get_imagelist', function( err, res ) {
 		var images = {},
 		    versions = {}
 		
@@ -118,7 +118,7 @@ directvps.get_imagelist = function( callback ) {
 
 // Get kernels
 directvps.get_kernellist = function( callback ) {
-	directvps.talk( 'GET', 'get_kernellist', function( res ) {
+	directvps.talk( 'GET', 'get_kernellist', function( err, res ) {
 		var kernels = {}
 		for( var k in res ) {
 			var kernel = res[k]
@@ -130,7 +130,7 @@ directvps.get_kernellist = function( callback ) {
 
 // Get locations
 directvps.get_locationlist = function( callback ) {
-	directvps.talk( 'GET', 'get_locationlist', function( res ) {
+	directvps.talk( 'GET', 'get_locationlist', function( err, res ) {
 		var locations = {}
 		for( var l in res ) {
 			var location = res[l]
@@ -142,7 +142,7 @@ directvps.get_locationlist = function( callback ) {
 
 // Get actions
 directvps.get_actionlist = function( callback ) {
-	directvps.talk( 'GET', 'get_actionlist', function( res ) {
+	directvps.talk( 'GET', 'get_actionlist', function( err, res ) {
 		var actions = {}
 		for( var a in res ) {
 			var action = res[a]
@@ -154,7 +154,7 @@ directvps.get_actionlist = function( callback ) {
 
 // Get statuses
 directvps.get_statuslist = function( callback ) {
-	directvps.talk( 'GET', 'get_statuslist', function( res ) {
+	directvps.talk( 'GET', 'get_statuslist', function( err, res ) {
 		var statuses = {}
 		for( var s in res ) {
 			statuses[ res[s].statusid ] = res[s]
@@ -165,7 +165,7 @@ directvps.get_statuslist = function( callback ) {
 
 // Get VPS list
 directvps.get_vpslist = function( callback ) {
-	directvps.talk( 'GET', 'get_vpslist', function( res ) {
+	directvps.talk( 'GET', 'get_vpslist', function( err, res ) {
 		var servers = {}
 		for( var s in res ) {
 			var server = res[s]
@@ -180,7 +180,7 @@ directvps.get_vpslist = function( callback ) {
 
 // Get backups
 directvps.get_backuplist = function( vpsid, callback ) {
-	directvps.talk( 'POST', 'get_backuplist', { vpsid: vpsid }, function( res ) {
+	directvps.talk( 'POST', 'get_backuplist', { vpsid: vpsid }, function( err, res ) {
 		var backups = {}
 		for( var b in res[0].backup ) {
 			backups[ res[0].backup[b].backupid ] = res[0].backup[b]
@@ -206,7 +206,7 @@ directvps.get_actionstatus = function( set, callback ) {
 
 // Get IPv4 address
 directvps.get_ipv4 = function( vpsid, callback ) {
-	directvps.talk( 'POST', 'get_ipv4', { vpsid: vpsid }, function( res ) {
+	directvps.talk( 'POST', 'get_ipv4', { vpsid: vpsid }, function( err, res ) {
 		var ips = {}
 		for( var i in res[0].ip ) {
 			var ip = res[0].ip[i]
@@ -257,7 +257,7 @@ directvps.add_vps = function( set, callback ) {
 
 // Traffic
 directvps.get_traffic = function( vpsid, callback ) {
-	directvps.talk( 'POST', 'get_traffic', { vpsid: vpsid }, function( res ) {
+	directvps.talk( 'POST', 'get_traffic', { vpsid: vpsid }, function( err, res ) {
 		var result = {}
 		if( res[0].error == '0' && res[0].traffic[0].jaar !== undefined ) {
 			for( var ti in res[0].traffic ) {
@@ -283,7 +283,7 @@ directvps.vps = function( vpsid ) {
 	return {
 		// info
 		details: function( cb ) {
-			directvps.get_vpslist( function( list ) {
+			directvps.get_vpslist( function( err, list ) {
 				cb( list[ vpsid ] )
 			})
 		},
@@ -332,7 +332,7 @@ directvps.vps = function( vpsid ) {
 			} else {
 				
 				// name, get all actions
-				directvps.get_actionlist( function( actions ) {
+				directvps.get_actionlist( function( err, actions ) {
 					for( var a in actions ) {
 						if( actions[a].omschrijving.toLowerCase() == nameid ) {
 							
@@ -356,7 +356,7 @@ directvps.vps = function( vpsid ) {
 					vpsid:			vpsid,
 					planningid:		actionRef
 				},
-				function( res ) {
+				function( err, res ) {
 					
 					var res = res[0]
 					switch( res.status ) {
@@ -462,9 +462,9 @@ directvps.vps = function( vpsid ) {
 						var reverse = false
 					}
 					
-					directvps.get_ipv4( vpsid, function( ips ) {
+					directvps.get_ipv4( vpsid, function( err, ips ) {
 						if( reverse ) {
-							directvps.get_reverse( vpsid, ip, function( rev ) {
+							directvps.get_reverse( vpsid, ip, function( err, rev ) {
 								var res = ips[ ip ]
 								res.reverse = rev[0].reverse
 								cb( res )
