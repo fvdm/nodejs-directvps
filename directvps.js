@@ -157,12 +157,16 @@ directvps.get_locationlist = function( callback ) {
 // Get actions
 directvps.get_actionlist = function( callback ) {
 	directvps.talk( 'GET', 'get_actionlist', function( err, res ) {
-		var actions = {}
-		for( var a in res ) {
-			var action = res[a]
-			actions[ action.actionid ] = action
+		var actions = null
+		if( ! err ) {
+			var actions = {}
+			for( var a in res ) {
+				var action = res[a]
+				actions[ action.actionid ] = action
+			}
 		}
-		callback( actions )
+		
+		callback( err, actions )
 	})
 }
 
