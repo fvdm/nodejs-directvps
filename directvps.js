@@ -315,6 +315,16 @@ directvps.get_ipv6 = function( vpsid, callback ) {
 	})
 }
 
+// Add IPv6 address
+directvps.add_ipv6 = function( vpsid, reverse, callback ) {
+	if( typeof reverse === 'function' ) {
+		var callback = reverse
+		var reverse = ''
+	}
+	
+	directvps.talk( 'POST', 'add_ipv6', {vpsid: vpsid, reverse: reverse}, callback )
+}
+
 // Add DirectAdmin license
 directvps.add_da = function( vpsid, callback ) {
 	directvps.talk( 'POST', 'add_da', { vpsid: vpsid }, callback )
