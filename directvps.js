@@ -41,7 +41,8 @@ var directvps = new EventEmitter()
 
 directvps.settings = {
 	apiVersion:	1,
-	debug:		false
+	debug:		false,
+	verifyCert:	false
 }
 
 // Setup
@@ -65,6 +66,9 @@ directvps.setup = function( vars ) {
 	
 	// set debug mode
 	directvps.settings.debug = vars.debug === true ? true : false
+	
+	// certificate verification
+	directvps.settings.verifyCert = vars.verifyCert === true : true : false
 	
 }
 
@@ -535,7 +539,8 @@ directvps.talk = function( type, path, fields, callback ) {
 		headers:	headers,
 		key:		directvps.settings.privateKey,
 		cert:		directvps.settings.certificate,
-		agent:		false
+		agent:		false,
+		rejectUnauthorized:	directvps.settings.verifyCert
 	}
 	
 	// build request
