@@ -173,11 +173,15 @@ directvps.get_actionlist = function( callback ) {
 // Get statuses
 directvps.get_statuslist = function( callback ) {
 	directvps.talk( 'GET', 'get_statuslist', function( err, res ) {
-		var statuses = {}
-		for( var s in res ) {
-			statuses[ res[s].statusid ] = res[s]
+		var statuses = null
+		if( ! err ) {
+			var statuses = {}
+			for( var s in res ) {
+				statuses[ res[s].statusid ] = res[s]
+			}
 		}
-		callback( statuses )
+		
+		callback( err, statuses )
 	})
 }
 
