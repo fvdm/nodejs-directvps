@@ -76,6 +76,11 @@ directvps.setup = function( vars ) {
 // Direct API calls //
 //////////////////////
 
+// Get account details
+directvps.get_accountdata = function( callback ) {
+	directvps.talk( 'GET', 'get_accountdata', callback )
+}
+
 // Get products
 directvps.get_productlist = function( callback ) {
 	directvps.talk( 'GET', 'get_productlist', {}, function( res ) {
