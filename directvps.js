@@ -325,6 +325,11 @@ directvps.add_ipv6 = function( vpsid, reverse, callback ) {
 	directvps.talk( 'POST', 'add_ipv6', {vpsid: vpsid, reverse: reverse}, callback )
 }
 
+// Delete IPv4 address
+directvps.del_ipv6 = function( vpsid, ipv6, callback ) {
+	directvps.talk( 'POST', 'del_ipv6', {vpsid: vpsid, ipv6: ipv6}, callback )
+}
+
 // Add DirectAdmin license
 directvps.add_da = function( vpsid, callback ) {
 	directvps.talk( 'POST', 'add_da', { vpsid: vpsid }, callback )
