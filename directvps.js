@@ -576,7 +576,11 @@ directvps.talk = function( type, path, fields, callback ) {
 	
 	// error
 	req.on( 'error', function( error ) {
-		directvps.emit( 'fail', error, options, fields )
+		err = new Error('request failed')
+		err.details = error
+		err.request = options
+		err.requestData = fields
+		doCallback( err )
 	})
 	
 	// post and close
