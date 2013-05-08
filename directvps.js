@@ -125,12 +125,16 @@ directvps.get_imagelist = function( callback ) {
 // Get kernels
 directvps.get_kernellist = function( callback ) {
 	directvps.talk( 'GET', 'get_kernellist', function( err, res ) {
-		var kernels = {}
-		for( var k in res ) {
-			var kernel = res[k]
-			kernels[ kernel.kernelid ] = kernel
+		var kernels = null
+		if( ! err ) {
+			var kernels = {}
+			for( var k in res ) {
+				var kernel = res[k]
+				kernels[ kernel.kernelid ] = kernel
+			}
 		}
-		callback( kernels )
+		
+		callback( err, kernels )
 	})
 }
 
