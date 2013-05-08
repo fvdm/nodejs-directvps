@@ -54,6 +54,8 @@ In order to use the API you need to have an API access private-key and certifica
     certificate       string    The certificate in plain text.
     privateKeyFile    string    Path to the private-key file,        ~/api.key
     certificateFile   string    Path to certificate file,            ~/api.crt
+    verifyCert        boolean   Validate server certificate          true
+                                agains trusted CA's.
 
 
 ## Load from files
