@@ -469,6 +469,11 @@ directvps.vps = function( vpsid ) {
 			)
 		},
 		
+		// Get action list
+		actionLog: function( cb ) {
+			directvps.get_actionlog( vpsid, cb )
+		},
+		
 		// start
 		start: function( cb ) {
 			directvps.vps( vpsid ).action( 1, cb )
