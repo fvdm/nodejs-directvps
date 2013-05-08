@@ -45,15 +45,15 @@ Setup
 In order to use the API you need to have an API access private-key and certificate. Refer to the documentation for details. After loading the module with *require()* set the key and certificate with **setup()**.
 
 
-## Variables
+## Settings
 
 
     Name              Type      Description                          Example
     ---------------   -------   ----------------------------------   ---------
-    privateKey        string    The private-key in plain text,
+    privateKey        string    The private-key in plain text.
     certificate       string    The certificate in plain text.
-    privateKeyFile    string    Path to the private-key file,        ~/api.key
-    certificateFile   string    Path to certificate file,            ~/api.crt
+    privateKeyFile    string    Path to the private-key file.        ~/api.key
+    certificateFile   string    Path to certificate file.            ~/api.crt
     verifyCert        boolean   Validate server certificate          true
                                 agains trusted CA's.
 
@@ -184,11 +184,11 @@ VPS
     Name       Type       Required   Description                              Example
     --------   --------   --------   --------------------------------------   ---------------
     actionID   string     required   ID or name of the action to run, best    12
-                                    is to provide an ID. Providing a name
-                                    would first request get_actionlist,
-                                    loop through the list lowercase
-                                    matching each description and finally
-                                    run the action.
+                                     is to provide an ID. Providing a name
+                                     would first request get_actionlist,
+                                     loop through the list lowercase
+                                     matching each description and finally
+                                     run the action.
     sub        string     optional   A value for some actions, 'product_id'   10
     when       string     optional   Schedule at date & time.                 2012-09-15 4:06
     callback   function   required   Receives result object.                  console.log
