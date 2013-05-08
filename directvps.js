@@ -399,15 +399,16 @@ directvps.vps = function( vpsid ) {
 					planningid:		actionRef
 				},
 				function( err, res ) {
-					
-					var res = res[0]
-					switch( res.status ) {
-						case '0': res.label = 'planned'; break
-						case '1': res.label = 'running'; break
-						case '2': res.label = 'complete'; break
+					if( ! err ) {
+						var res = res[0]
+						switch( res.status ) {
+							case '0': res.label = 'planned'; break
+							case '1': res.label = 'running'; break
+							case '2': res.label = 'complete'; break
+						}
 					}
 					
-					cb( res )
+					cb( err, res )
 					
 				}
 			)
