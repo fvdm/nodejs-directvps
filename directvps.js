@@ -276,11 +276,8 @@ directvps.get_ipv4 = function( vpsid, callback ) {
 			var ips = {}
 			for( var i in res[0].ip ) {
 				var ip = res[0].ip[i]
-				ips[ ip[0] ] = {
-					ip:		res[0].ip[i][0],
-					type:		res[0].ip[i][1],
-					typeLabel:	res[0].ip[i][1] == '1' ? 'primary' : 'secondary'
-				}
+				ip.typeLabel = ip.type == '1' ? 'primary' : 'secondary'
+				ips[ ip.ip ] = ip
 			}
 		}
 		
