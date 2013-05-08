@@ -571,7 +571,7 @@ directvps.talk = function( type, path, fields, callback ) {
 		}
 	}
 	
-	// prepare
+	// build request
 	var headers = {
 		'Accept':	'application/json',
 		'User-Agent':	'directvps.js (https://github.com/fvdm/nodejs-directvps)'
@@ -598,10 +598,10 @@ directvps.talk = function( type, path, fields, callback ) {
 		rejectUnauthorized:	directvps.settings.verifyCert
 	}
 	
-	// build request
-	var req = https.request( options, function( response ) {
-		
-		// response
+	var request = https.request( options )
+	
+	// response
+	request.on( 'response', function( response ) {
 		var data = ''
 		response.on( 'data', function( chunk ) { data += chunk })
 		response.on( 'end', function() {
@@ -619,7 +619,7 @@ directvps.talk = function( type, path, fields, callback ) {
 	})
 	
 	// error
-	req.on( 'error', function( error ) {
+	request.on( 'error', function( error ) {
 		err = new Error('request failed')
 		err.details = error
 		err.request = options
@@ -629,10 +629,10 @@ directvps.talk = function( type, path, fields, callback ) {
 	
 	// post and close
 	if( type == 'POST' ) {
-		req.write( querystr )
+		request.write( querystr )
 	}
 	
-	req.end()
+	request.end()
 }
 
 // Ready
