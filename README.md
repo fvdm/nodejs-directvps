@@ -1,14 +1,14 @@
 nodejs-directvps
-============================
+================
 
 Access the [DirectVPS](https://www.directvps.nl/) API from your Node.js code
 
 
 Installation
-============================
+------------
 
 
-## From NPM
+### From NPM
 
 To install the module from the NPM repository run this:
 
@@ -23,7 +23,7 @@ var directvps = require('directvps')
 ```
 
 
-## From source
+### From source
 
 Or install directly from Github source:
 
@@ -39,13 +39,12 @@ var directvps = require('/path/to/nodejs-directvps')
 
 
 Setup
-============================
-
+-----
 
 In order to use the API you need to have an API access private-key and certificate. Refer to the documentation for details. After loading the module with *require()* set the key and certificate with **setup()**.
 
 
-## Settings
+### Settings
 
 
     Name              Type      Description                          Example
@@ -58,7 +57,7 @@ In order to use the API you need to have an API access private-key and certifica
                                 agains trusted CA's.
 
 
-## Load from files
+### Load from files
 
 This is the simple way, if you have access to a filesystem.
 
@@ -70,7 +69,7 @@ directvps.setup({
 ```
 
 
-## Load directly
+### Load directly
 
 Or you can load the private-key and certificate directly, ie. from a database.
 
@@ -82,7 +81,7 @@ directvps.setup({
 ```
 
 Usage
-============================
+-----
 
 
 This module is event based, meaning all functions require a **callback** function parameter to process the result. All methods from the API are implemented directly, but for VPS specific methods a shorthand is also available. The two samples below highlight both methods. 
@@ -92,7 +91,7 @@ All *boolean* parameters can also be strings: true/false, yes/no, 1/0.
 **The exsamples below are based on the NPM install. If you rather directly use the source file use the *require()* replacement above.**
 
 
-## Direct method
+### Direct method
 
 In this example the API method *[get_vpslist](#getvpslist)* is called, the *callback function* loops through the resulting *servers* object and for each server it writes a log to the console.
 
@@ -108,7 +107,7 @@ directvps.get_vpslist( function( servers ) {
 ```
 
 
-## Shorthand method
+### Shorthand method
 
 In this example the **[vps](#vps)** shorthand method is called to get the functions for server *123*. Then its sub-function **[.details](#vpsdetails)** is called to get the server's information. In the background the script requests all servers with **[get_vpslist](#getvpslist)**, loops through them until *vpsid* *123* is found and then send the result to the **callback** *function*. In this case, to write a line to the console.
 
@@ -128,7 +127,7 @@ vps.details( function( details ) {
 ```
 
 
-## Extended example
+### Extended example
 
 
 Shutdown all servers from one client, these may be identified with 'client: 123' in their tag.
@@ -174,11 +173,10 @@ directvps.get_vpslist( function( servers ) {
 
 
 VPS
-============================
+---
 
 
-## vps.action
-### ( actionID, [sub], [when], callback )
+### vps.action ( actionID, [sub], [when], callback )
 
 
     Name       Type       Required   Description                              Example
@@ -207,8 +205,8 @@ directvps.vps( 123 ).action( 12, 10, console.log )
 directvps.vps( 123 ).action( 'shutdown', '01-01-2013 0:00', console.log )
 ```
 
-## vps.actionStatus
-### ( planningID, callback )
+
+### vps.actionStatus ( planningID, callback )
 
 Get the status of the planned action.
 
@@ -231,8 +229,7 @@ directvps.vps( 123 ).actionStatus( 8765, console.log )
 ```
 
 
-## vps.start
-### ( callback )
+### vps.start ( callback )
 
 Start a server (after installation or shutdown).
 
@@ -247,8 +244,7 @@ directvps.vps( 123 ).start( console.log )
 ```
 
 
-## vps.shutdown
-### ( [force], callback )
+### vps.shutdown ( [force], callback )
 
 Shutdown a server.
 
@@ -265,8 +261,7 @@ directvps.vps( 123 ).shutdown( true, console.log )
 ```
 
 
-## vps.reboot
-### ( [force], callback )
+### vps.reboot ( [force], callback )
 
 Reboot a server.
 
@@ -282,8 +277,8 @@ Reboot a server.
 directvps.vps( 123 ).reboot( true, console.log )
 ```
 
-## vps.backups
-### ( callback )
+
+### vps.backups ( callback )
 
 Get a list of all backups for this server.
 
@@ -315,8 +310,7 @@ directvps.vps( 123 ).backups( console.log )
 ```
 
 
-## vps.restore
-### ( backupID, callback )
+### vps.restore ( backupID, callback )
 
 Restore a backup.
 
@@ -338,8 +332,7 @@ directvps.vps( 123 ).restore( 1234567, console.log )
 ```
 
 
-## vps.update
-### ( params, callback )
+### vps.update ( params, callback )
 
 Change server settings. Set only the params you wish to edit.
 
@@ -374,8 +367,7 @@ directvps.vps( 123 ).update(
 ```
 
 
-## vps.upgradeProduct
-### ( productID, callback )
+### vps.upgradeProduct ( productID, callback )
 
 Upgrade the server to another product.
 
@@ -391,8 +383,7 @@ directvps.vps( 123 ).upgradeProduct( 20, console.log )
 ```
 
 
-## vps.upgradeKernel
-### ( kernelID, callback )
+### vps.upgradeKernel ( kernelID, callback )
 
 Change to another kernel. This will reboot the server, but all contents and OS should remain.
 
@@ -408,8 +399,7 @@ directvps.vps( 123 ).upgradeKernel( 10, console.log )
 ```
 
 
-## vps.reinstall
-### ( imageID, callback )
+### vps.reinstall ( imageID, callback )
 
 Perform a clean install of the choosen OS image.
 
@@ -425,8 +415,7 @@ directvps.vps( 123 ).reinstall( 28, console.log )
 ```
 
 
-## vps.installDirectadmin
-### ( licenseID, callback )
+### vps.installDirectadmin ( licenseID, callback )
 
 Install DirectAdmin on the server.
 
@@ -442,8 +431,7 @@ directvps.vps( 123 ).installDirectadmin( 111222, console.log )
 ```
 
 
-## vps.addDirectadmin
-### ( licenseID, callback )
+### vps.addDirectadmin ( licenseID, callback )
 
 Add (buy) a DirectAdmin license for this server. This will *not* install DA on the server, use [vps.installDirectadmin](#vpsinstalldirectadmin) to perform the installation.
 
@@ -458,8 +446,7 @@ directvps.vps( 123 ).addDirectadmin( 111222, console.log )
 ```
 
 
-## vps.deleteDirectadmin
-### ( licenseID, callback )
+### vps.deleteDirectadmin ( licenseID, callback )
 
 Delete a DirectAdmin license from this server.
 
@@ -475,8 +462,7 @@ directvps.vps( 123 ).deleteDirectadmin( 111222, console.log )
 ```
 
 
-## vps.addIPv4
-### ( callback )
+### vps.addIPv4 ( callback )
 
 Add (buy) an IPv4 address to this server.
 
@@ -491,8 +477,7 @@ directvps.vps( 123 ).addIPv4( console.log )
 ```
 
 
-## vps.ipv4
-### ( [ip], callback )
+### vps.ipv4 ( [ip], callback )
 
 Get details about one IP or all associated to this server.
 
@@ -517,8 +502,7 @@ directvps.vps( 123 ).ipv4( console.log )
 ```
 
 
-## vps.ipv4.delete
-### ( callback )
+### vps.ipv4.delete ( callback )
 
 Remove an IPv4 address from this server.
 
@@ -534,8 +518,7 @@ directvps.vps( 123 ).ipv4( '1.2.3.4' ).delete( console.log )
 
 
 Unlicense
-============================
-
+---------
 
 This is free and unencumbered software released into the public domain.
 
