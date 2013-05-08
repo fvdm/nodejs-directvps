@@ -85,7 +85,7 @@ directvps.get_productlist = function( callback ) {
 			products[ product.productid ] = product
 		}
 		callback( products )
-	});
+	})
 }
 
 // Get images
@@ -185,7 +185,7 @@ directvps.get_backuplist = function( vpsid, callback ) {
 		for( var b in res[0].backup ) {
 			backups[ res[0].backup[b].backupid ] = res[0].backup[b]
 		}
-		callback( backups );
+		callback( backups )
 	})
 }
 
@@ -270,7 +270,7 @@ directvps.get_traffic = function( vpsid, callback ) {
 		}
 		
 		callback( result )
-	});
+	})
 }
 
 
@@ -545,10 +545,10 @@ directvps.talk = function( type, path, fields, callback ) {
 	
 	// build request
 	var req = https.request( options, function( response ) {
-			
+		
 		// response
 		var data = ''
-		response.on( 'data', function( chunk ) { data += chunk });
+		response.on( 'data', function( chunk ) { data += chunk })
 		response.on( 'end', function() {
 			
 			data = data.toString('utf8').trim()
