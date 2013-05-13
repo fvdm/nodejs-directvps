@@ -661,8 +661,7 @@ function doDebug( req, body, res, data ) {
 		},
 		response: {
 			headers: res.headers || {},
-			body: data || null,
-			bodyDecoded: JSON.parse(data) || data || null
+			body: data || null
 		}
 	}
 }
