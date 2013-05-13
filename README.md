@@ -238,6 +238,28 @@ directvps.get_productlist( console.log )
 ```
 
 _(output truncated)_
+
+
+### get_isolist ( callback )
+
+Get a list of all available ISOs (OS images).
+
+```js
+directvps.get_isolist( console.log )
+```
+
+```js
+{ '0': { isoid: '0', omschrijving: '- leeg -' },
+  '1': { isoid: '1', omschrijving: 'Debian GNU/Linux 6.0 / Squeeze 64b' },
+  '2': { isoid: '2', omschrijving: 'CentOS 6.3 64b' },
+  '3': { isoid: '3', omschrijving: 'KVM Virtio drivers voor Windows' },
+  '4': { isoid: '4', omschrijving: 'Clear OS 5.2 64b' },
+  '5': { isoid: '5', omschrijving: 'Windows Password Reset' },
+  '6': { isoid: '6', omschrijving: 'Ubuntu 10.04 64b' },
+  '7': { isoid: '7', omschrijving: 'Microsoft Windows Server 2008R2 NL' }
+```
+
+_(output truncated)_
 VPS
 ---
 
