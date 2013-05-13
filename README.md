@@ -466,7 +466,7 @@ directvps.get_backuplist( 123, console.log )
 
 Update details about a server.
 
-Only include fields you wish to update, others are left intact. To clear a field (ie. password or sshkey) set it to `null` or an empty string `""`. Most of these fields are applied to your server after a reinstall.
+Only include fields you wish to update, others are left intact. To clear a field (ie. password or sshkey) set it to `null` or an empty string `""`. When you set a `password` or `sshkey` you will not receive the SMS with root password.
 
 
 #### Object fields:
