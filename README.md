@@ -339,6 +339,32 @@ directvps.get_kernellist( console.log )
 ```
 
 _(output truncated)_
+
+
+### get_locationlist ( callback )
+
+Get physical locations where servers can be created.
+
+```js
+directvps.get_locationlist( console.log )
+```
+
+```js
+{ '1': 
+   { land: 'NL',
+     locationid: '1',
+     omschrijving: 'NL, Amsterdam (Schuberg Philis)',
+     naam: 'Schuberg Philis',
+     plaats: 'Amsterdam' },
+  '2': 
+   { land: 'NL',
+     locationid: '2',
+     omschrijving: 'NL, Amsterdam (Nikhef)',
+     naam: 'Nikhef',
+     plaats: 'Amsterdam' } }
+```
+
+_(output truncated)_
 VPS
 ---
 
