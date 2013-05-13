@@ -172,6 +172,29 @@ directvps.get_vpslist( function( servers ) {
 API methods
 -----------
 
+### get_accountdata ( callback )
+
+Get details about the current account.
+
+```js
+directvps.get_accountdata( console.log )
+```
+
+```js
+[ { landnummer: '31',
+    kid: '123456789',
+    woonplaats: 'Smalltown',
+    adres: 'Some Street 123',
+    firma: 'Company Inc.',
+    email: 'your@mail.tld',
+    klantnummer: 'DB000',
+    bankrekening: '123456789',
+    mobiel: '123456789',
+    smsbeforeaction: '1',
+    naam: 'John Smith',
+    postcode: '1000 AA',
+    allowconsole: '0' } ]
+```
 VPS
 ---
 
