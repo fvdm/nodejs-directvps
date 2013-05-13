@@ -195,6 +195,21 @@ directvps.get_accountdata( console.log )
     postcode: '1000 AA',
     allowconsole: '0' } ]
 ```
+
+
+### edit_accountdata ( object, callback )
+
+Edit your account details.
+
+```js
+directvps.edit_accountdata(
+	{
+		kid: '123456789',
+		allowconsole: 1
+	},
+	console.log
+)
+```
 VPS
 ---
 
