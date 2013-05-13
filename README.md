@@ -471,15 +471,15 @@ Only include fields you wish to update, others are left intact. To clear a field
 
 #### Object fields:
 
-	field      applied    description                  example
-	--------   ---------  ---------------------------  --------------
-	vpsid                 Server ID                    123
-	tag        instant    Server tag in control panel  devbox
-	password   reinstall  Default root password        secret
-	sshkey     reinstall  Default root SSH key         ssh-rsa AA..
-	hostname   reinstall  Server hostname              dev.domain.tld
-	iso        instant    Mount this ISO ID            123
-	bootorder  reboot     Boot order ID                1
+	field       applied     description                   example
+	---------   ---------   ---------------------------   --------------
+	vpsid                   Server ID                     123
+	tag         instant     Server tag in control panel   devbox
+	password    reinstall   Default root password         secret
+	sshkey      reinstall   Default root SSH key          ssh-rsa AA..
+	hostname    reinstall   Server hostname               dev.domain.tld
+	iso         instant     Mount this ISO ID             123
+	bootorder   reboot      Boot order ID                 1
 
 
 ```js
