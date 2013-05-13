@@ -365,6 +365,25 @@ directvps.get_locationlist( console.log )
 ```
 
 _(output truncated)_
+
+
+### get_actionlist ( callback )
+
+List actions certain methods may return.
+
+```js
+directvps.get_actionlist( console.log )
+```
+
+```js
+{ '1': { actionid: '1', omschrijving: 'Start' },
+  '2': { actionid: '2', omschrijving: 'Shutdown' },
+  '3': { actionid: '3', omschrijving: 'Reboot' },
+  '6': { actionid: '6', omschrijving: 'Herinstallatie' },
+  '8': { actionid: '8', omschrijving: 'Herstel vanuit backup' } }
+```
+
+_(output truncated)_
 VPS
 ---
 
