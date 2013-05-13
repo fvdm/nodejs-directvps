@@ -105,10 +105,10 @@ directvps.get_isolist = function( callback ) {
 				var iso = res[i]
 				isos[ iso.isoid ] = iso
 			}
-		})
+		}
 		
 		callback( err, isos )
-	}
+	})
 }
 
 // Get boot orders
