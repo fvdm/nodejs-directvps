@@ -169,6 +169,9 @@ directvps.get_vpslist( function( servers ) {
 ```
 
 
+API methods
+-----------
+
 VPS
 ---
 
