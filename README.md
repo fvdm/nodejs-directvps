@@ -204,7 +204,7 @@ Edit your account details.
 ```js
 directvps.edit_accountdata(
 	{
-		kid: '123456789',
+		kid:          '123456789',
 		allowconsole: 1
 	},
 	console.log
@@ -311,6 +311,8 @@ directvps.get_imagelist( console.log )
 ```
 
 _(output truncated)_
+
+
 VPS
 ---
 
