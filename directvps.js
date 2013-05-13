@@ -39,7 +39,6 @@ var fs = require('fs'),
 var directvps = {}
 
 directvps.settings = {
-	apiVersion:	1,
 	verifyCert:	false
 }
 
@@ -683,7 +682,7 @@ directvps.talk = function( type, path, fields, callback ) {
 	var options = {
 		host:			'api.directvps.nl',
 		port:			443,
-		path:			'/'+ directvps.settings.apiVersion +'/'+ path,
+		path:			'/1/'+ path,
 		method:			type,
 		headers:		headers,
 		key:			directvps.settings.privateKey,
