@@ -210,6 +210,34 @@ directvps.edit_accountdata(
 	console.log
 )
 ```
+
+
+### get_productlist ( callback )
+
+Get a list of all available products.
+
+```js
+directvps.get_productlist( console.log )
+```
+
+```js
+{ '1': 
+   { traffic: 250,
+     hdd: 25,
+     platformid: '1',
+     mem: 256,
+     omschrijving: 'DirectVPS Basic 1',
+     productid: '1' },
+  '2': 
+   { traffic: 500,
+     hdd: 50,
+     platformid: '1',
+     mem: 512,
+     omschrijving: 'DirectVPS Basic 2',
+     productid: '2' }
+```
+
+_(output truncated)_
 VPS
 ---
 
