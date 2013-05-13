@@ -750,6 +750,7 @@ directvps.talk = function( type, path, fields, callback ) {
 				
 				if( data[0].error ) {
 					data = data[0]
+					data.error = data.error == '1' ? true : false
 				}
 				
 				doCallback( null, data )
