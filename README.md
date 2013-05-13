@@ -402,6 +402,38 @@ directvps.get_statuslist( console.log )
 ```
 
 _(output truncated)_
+
+
+### get_vpslist ( callback )
+
+List all servers in your account.
+
+```js
+directvps.get_vpslist( console.log )
+```
+
+```js
+{ '123': 
+   { status: '3',
+     ip: '178.21.x.x',
+     hostname: null,
+     password: 0,
+     iso: '58',
+     tag: 'vaelis test',
+     imageid: '72',
+     traffic: 250,
+     ipv6: '2a02:2308::123:aaff:fe12:3456',
+     kernelid: '15',
+     bootorder: '2',
+     locationid: '1',
+     memory: 256,
+     hwid: '120',
+     vpsid: '123',
+     sshkey: null,
+     product: 'DirectVPS Vaelis 1',
+     type: '2',
+     productid: '31' } }
+```
 VPS
 ---
 
