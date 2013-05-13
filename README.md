@@ -277,6 +277,40 @@ directvps.get_bootorderlist( console.log )
 ```
 
 _(output truncated)_
+
+
+### get_imagelist ( callback )
+
+Get available OS images.
+
+```js
+directvps.get_imagelist( console.log )
+```
+
+```js
+{ '2': 
+   { versienaam: 'Lenny',
+     distributie: 'Debian',
+     dadistro: '1',
+     bits: '32',
+     omschrijving: 'Debian 5.0 / Lenny | 32b',
+     versie: '5.0',
+     imageid: '2',
+     afgeraden: '1',
+     laatste_versie: '0' },
+  '4': 
+   { versienaam: 'Jaunty',
+     distributie: 'Ubuntu',
+     dadistro: '0',
+     bits: '32',
+     omschrijving: 'Ubuntu 9.04 / Jaunty | 32b',
+     versie: '9.04',
+     imageid: '4',
+     afgeraden: '0',
+     laatste_versie: '0' } }
+```
+
+_(output truncated)_
 VPS
 ---
 
