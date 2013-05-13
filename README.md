@@ -384,6 +384,24 @@ directvps.get_actionlist( console.log )
 ```
 
 _(output truncated)_
+
+
+### get_statuslist ( callback )
+
+List statuses certain methods may return.
+
+```js
+directvps.get_statuslist( console.log )
+```
+
+```js
+{ '1': { statusid: '1', omschrijving: 'Aan te maken' },
+  '2': { statusid: '2', omschrijving: 'In aanmaak' },
+  '3': { statusid: '3', omschrijving: 'Actief' },
+  '4': { statusid: '4', omschrijving: 'Backup wordt gemaakt' } }
+```
+
+_(output truncated)_
 VPS
 ---
 
