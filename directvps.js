@@ -735,7 +735,13 @@ directvps.talk = function( type, path, fields, callback ) {
 				data[d].copy( buf, pos )
 			}
 			
-			data = buf.toString('utf8').trim()
+			data = buf.toString('utf8')
+			data = data.replace( /(\u0000)+$/, '', data )
+			data = data.trim()
+			if( data.substr(0,1) == '{' && data.substr(-1,1) == ']' ) {
+				data = '['+ data
+			}
+			
 			buf = null
 			
 			// do callback if valid data
