@@ -39,7 +39,8 @@ var fs = require('fs'),
 var directvps = {}
 
 directvps.settings = {
-	verifyCert:	false
+	verifyCert:	false,	// boolean
+	debugResponse:	null	// function
 }
 
 // Setup
@@ -64,6 +65,8 @@ directvps.setup = function( vars ) {
 	// certificate verification
 	directvps.settings.verifyCert = vars.verifyCert === true ? true : false
 	
+	// debugResponse
+	directvps.settings.debugResponse = vars.debugResponse || null
 }
 
 //////////////////////
@@ -647,6 +650,23 @@ directvps.vps = function( vpsid ) {
 // CORE //
 //////////
 
+function doDebug( req, body, res, data ) {
+	return {
+		request: {
+			method: req.method,
+			uri: 'https://'+ req.host + req.path,
+			headers: req.headers || {},
+			body: body || null,
+			bodyDecoded: unescape(body) || body || null
+		},
+		response: {
+			headers: res.headers || {},
+			body: data || null,
+			bodyDecoded: JSON.parse(data) || data || null
+		}
+	}
+}
+
 // API communication
 directvps.talk = function( type, path, fields, callback ) {
 	
@@ -728,6 +748,11 @@ directvps.talk = function( type, path, fields, callback ) {
 				err.responseHeaders = response.headers
 				err.responseBody = data
 				doCallback( err )
+			}
+			
+			// debugResponse
+			if( typeof directvps.settings.debugResponse === 'function' ) {
+				directvps.settings.debugResponse( doDebug( options, querystr, response, data ) )
 			}
 		})
 	})
