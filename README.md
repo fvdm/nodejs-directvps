@@ -492,6 +492,10 @@ directvps.edit_vps(
 	console.log
 )
 ```
+
+```js
+{ error: false, errormessage: '' }
+```
 VPS
 ---
 
