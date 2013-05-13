@@ -434,6 +434,32 @@ directvps.get_vpslist( console.log )
      type: '2',
      productid: '31' } }
 ```
+
+
+### get_backuplist ( vpsid, callback )
+
+List all available backups for a server identified by `vpsid`.
+
+```js
+directvps.get_backuplist( 123, console.log )
+```
+
+```js
+{ '12435': 
+   { einde: '2013-03-30 05:31:16',
+     backupid: '12435',
+     level: '0',
+     status: '1',
+     begin: '2013-03-30 05:28:06',
+     size: '224913622' },
+  '12345': 
+   { einde: '2013-05-07 04:56:52',
+     backupid: '12345',
+     level: '1',
+     status: '1',
+     begin: '2013-05-07 04:55:32',
+     size: '31392743' } }
+```
 VPS
 ---
 
