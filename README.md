@@ -313,6 +313,32 @@ directvps.get_imagelist( console.log )
 _(output truncated)_
 
 
+### get_kernellist ( callback )
+
+Get available kernels.
+
+```js
+directvps.get_kernellist( console.log )
+```
+
+```js
+{ '0': 
+   { kernelid: '0',
+     default: '0',
+     bits: '64',
+     omschrijving: 'Eigen kernel',
+     versie: 'Eigen kernel',
+     afgeraden: '0' },
+  '1': 
+   { kernelid: '1',
+     default: '0',
+     bits: '32',
+     omschrijving: '< 2.6.36',
+     versie: '2.6.26',
+     afgeraden: '1' } }
+```
+
+_(output truncated)_
 VPS
 ---
 
