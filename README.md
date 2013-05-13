@@ -53,6 +53,7 @@ In order to use the API you need to have an API access private-key and certifica
     certificateFile   string    Path to certificate file.            ~/api.crt
     verifyCert        boolean   Validate server certificate          true
                                 agains trusted CA's.
+    debugResponse     function  Receive communication details.
 
 
 ### Load from files
