@@ -460,6 +460,38 @@ directvps.get_backuplist( 123, console.log )
      begin: '2013-05-07 04:55:32',
      size: '31392743' } }
 ```
+
+
+### edit_vps ( object, callback )
+
+Update details about a server.
+
+Only include fields you wish to update, others are left intact. To clear a field (ie. password or sshkey) set it to `null` or an empty string `""`. Most of these fields are applied to your server after a reinstall.
+
+
+#### Object fields:
+
+	field      applied    description                  example
+	--------   ---------  ---------------------------  --------------
+	vpsid                 Server ID                    123
+	tag        instant    Server tag in control panel  devbox
+	password   reinstall  Default root password        secret
+	sshkey     reinstall  Default root SSH key         ssh-rsa AA..
+	hostname   reinstall  Server hostname              dev.domain.tld
+	iso        instant    Mount this ISO ID            123
+	bootorder  reboot     Boot order ID                1
+
+
+```js
+directvps.edit_vps(
+	{
+		vpsid:     123,
+		hostname:  'myserver.tld',
+		password:  'secret'
+	},
+	console.log
+)
+```
 VPS
 ---
 
