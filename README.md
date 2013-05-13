@@ -260,6 +260,23 @@ directvps.get_isolist( console.log )
 ```
 
 _(output truncated)_
+
+
+### get_bootorderlist ( callback )
+
+Get available boot orders for servers.
+
+```js
+directvps.get_bootorderlist( console.log )
+```
+
+```js
+{ '0': { omschrijving: 'HDD, DVD, Network', bootorderid: '0' },
+  '2': { omschrijving: 'DVD, HDD, Network', bootorderid: '2' },
+  '3': { omschrijving: 'Network, HDD, DVD', bootorderid: '3' } }
+```
+
+_(output truncated)_
 VPS
 ---
 
