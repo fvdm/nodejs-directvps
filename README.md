@@ -8,9 +8,9 @@ Installation
 ------------
 
 
-### From NPM
+### From npm
 
-To install the module from the NPM repository run this:
+To install the module from the [npm repository](https://npmjs.org/package/directvps) run this:
 
 	npm install directvps
 	
@@ -24,7 +24,7 @@ var directvps = require('directvps')
 
 ### From source
 
-Or install directly from Github source:
+Install directly from Github source:
 
 	git clone https://github.com/fvdm/nodejs-directvps.git
 
