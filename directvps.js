@@ -40,7 +40,8 @@ var directvps = {}
 
 directvps.settings = {
 	verifyCert:	false,	// boolean
-	debugResponse:	null	// function
+	debugResponse:	null,	// function
+	iface: null
 }
 
 // Setup
@@ -67,6 +68,9 @@ directvps.setup = function( vars ) {
 	
 	// debugResponse
 	directvps.settings.debugResponse = vars.debugResponse || null
+	
+	// outbound interface
+	directvps.settings.iface = vars.iface || null
 }
 
 //////////////////////
@@ -704,6 +708,7 @@ directvps.talk = function( type, path, fields, callback ) {
 		path:			'/1/'+ path,
 		method:			type,
 		headers:		headers,
+		localAddress: directvps.settings.iface,
 		key:			directvps.settings.privateKey,
 		cert:			directvps.settings.certificate,
 		agent:			false,
