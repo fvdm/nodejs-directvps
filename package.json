@@ -2,11 +2,12 @@
   "author": {
     "name":               "Franklin van de Meent",
     "email":              "fr@nkl.in",
-    "url":                "http://frankl.in"
+    "url":                "https://frankl.in"
   },
   "name":                 "directvps",
   "description":          "Unofficial DirectVPS API module",
-  "version":              "0.4.0",
+  "homepage":             "https://frankl.in/code/directvps-api-for-node-js",
+  "version":              "0.5.0",
   "repository": {
     "type":               "git",
     "url":                "git://github.com/fvdm/nodejs-directvps.git"
@@ -21,7 +22,7 @@
   "engines": {
     "node":               "*"
   },
-  "keywords":             ["directvps", "api", "vps", "servers"],
+  "keywords":             ["directvps", "api", "vps", "servers", "hosting"],
   "license": {
     "type":               "Public Domain",
     "url":                "https://github.com/fvdm/nodejs-directvps/raw/master/UNLICENSE"
