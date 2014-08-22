@@ -93,8 +93,8 @@ directvps.get_productlist = function( callback ) {
 		var products = null
 		if( ! err ) {
 			var products = {}
-			for( var p in res ) {
-				var product = res[p]
+			for( var i=0; i<res.length; i++ ) {
+				var product = res[i]
 				products[ product.productid ] = product
 			}
 		}
@@ -108,7 +108,7 @@ directvps.get_isolist = function( callback ) {
 		var isos = null
 		if( ! err ) {
 			var isos = {}
-			for( var i in res ) {
+			for( var i=0; i<res.length; i++ ) {
 				var iso = res[i]
 				isos[ iso.isoid ] = iso
 			}
@@ -124,8 +124,8 @@ directvps.get_bootorderlist = function( callback ) {
 		var orders = null
 		if( ! err ) {
 			var orders = {}
-			for( var o in res ) {
-				var order = res[o]
+			for( var i=0; i<res.length; i++ ) {
+				var order = res[i]
 				orders[ order.bootorderid ] = order
 			}
 		}
@@ -143,7 +143,7 @@ directvps.get_imagelist = function( callback ) {
 			    versions = {}
 			
 			// build images & collect latest versions
-			for( var i in res ) {
+			for( var i=0; i<res.length; i++ ) {
 				var image = res[i]
 				
 				image.versie_check = parseInt( image.versie.replace('.', '') )
@@ -155,7 +155,7 @@ directvps.get_imagelist = function( callback ) {
 			}
 			
 			// set latest versions
-			for( var i in images ) {
+			for( var i=0; i<res.length; i++ ) {
 				images[i].laatste_versie = images[i].versie_check == versions[ images[i].distributie ] ? '1' : '0'
 				delete images[i].versie_check
 			}
@@ -171,8 +171,8 @@ directvps.get_kernellist = function( callback ) {
 		var kernels = null
 		if( ! err ) {
 			var kernels = {}
-			for( var k in res ) {
-				var kernel = res[k]
+			for( var i=0; i<res.length; i++ ) {
+				var kernel = res[i]
 				kernels[ kernel.kernelid ] = kernel
 			}
 		}
@@ -187,8 +187,8 @@ directvps.get_locationlist = function( callback ) {
 		var locations = null
 		if( ! err ) {
 			var locations = {}
-			for( var l in res ) {
-				var location = res[l]
+			for( var i=0; i<res.length; i++ ) {
+				var location = res[i]
 				locations[ location.locationid ] = location
 			}
 		}
@@ -203,8 +203,8 @@ directvps.get_actionlist = function( callback ) {
 		var actions = null
 		if( ! err ) {
 			var actions = {}
-			for( var a in res ) {
-				var action = res[a]
+			for( var i=0; i<res.length; i++ ) {
+				var action = res[i]
 				actions[ action.actionid ] = action
 			}
 		}
@@ -219,8 +219,8 @@ directvps.get_statuslist = function( callback ) {
 		var statuses = null
 		if( ! err ) {
 			var statuses = {}
-			for( var s in res ) {
-				statuses[ res[s].statusid ] = res[s]
+			for( var i=0; i<res.length; i++ ) {
+				statuses[ res[s].statusid ] = res[i]
 			}
 		}
 		
@@ -234,8 +234,8 @@ directvps.get_vpslist = function( callback ) {
 		var servers = null
 		if( ! err ) {
 			var servers = {}
-			for( var s in res ) {
-				var server = res[s]
+			for( var i=0; i<res.length; i++ ) {
+				var server = res[i]
 				servers[ server.vpsid ] = server
 			}
 		}
@@ -250,8 +250,8 @@ directvps.get_backuplist = function( vpsid, callback ) {
 		var backups = null
 		if( ! err ) {
 			var backups = {}
-			for( var b in res[0].backup ) {
-				backups[ res[0].backup[b].backupid ] = res[0].backup[b]
+			for( var i=0; i<res[0].backup.length; i++ ) {
+				backups[ res[0].backup[i].backupid ] = res[0].backup[i]
 			}
 		}
 		
@@ -280,7 +280,7 @@ directvps.get_ipv4 = function( vpsid, callback ) {
 		var ips = null
 		if( ! err ) {
 			var ips = {}
-			for( var i in res[0].ip ) {
+			for( var i=0; i<res[0].ip.length; i++ ) {
 				var ip = res[0].ip[i]
 				ip.typeLabel = ip.type == '1' ? 'primary' : 'secondary'
 				ips[ ip.ip ] = ip
@@ -312,7 +312,7 @@ directvps.get_ipv6 = function( vpsid, callback ) {
 		var ips = null
 		if( ! err ) {
 			var ips = {}
-			for( var i in res[0].ip ) {
+			for( var i=0; i<res[0].ip.length; i++ ) {
 				var ip = res[0].ip[i]
 				ip.typeLabel = ip.type == '1' ? 'primary' : 'secondary'
 				ips[ ip.ip ] = ip
@@ -370,8 +370,8 @@ directvps.get_traffic = function( vpsid, callback ) {
 		if( ! err ) {
 			var result = {}
 			if( res[0].error == '0' && res[0].traffic[0].jaar !== undefined ) {
-				for( var ti in res[0].traffic ) {
-					var t = res[0].traffic[ti]
+				for( var i=0; i<res[0].traffic.length; i++ ) {
+					var t = res[0].traffic[i]
 					if( result[ t.jaar ] === undefined ) {
 						result[ t.jaar ] = {}
 					}
@@ -391,8 +391,8 @@ directvps.get_actionlog = function( vpsid, callback ) {
 		if( ! err ) {
 			var result = {}
 			if( res[0].error == '0' && res[0].actionlog[0].planningid !== undefined ) {
-				for( var ai in res[0].actionlog ) {
-					var action = res[0].actionlog[ai]
+				for( var i=0; i<res[0].actionlog.length; i++ ) {
+					var action = res[0].actionlog[i]
 					result[ action.planningid ] = action
 				}
 			}
@@ -443,15 +443,15 @@ directvps.vps = function( vpsid ) {
 			// prepare
 			var vars = { vpsid: vpsid }
 			
-			for( var a in arguments ) {
-				if( a == '0' ) {
-					var nameid = arguments[a] +''
-				} else if( typeof arguments[a] == 'function' ) {
+			for( var i=0; i<arguments.length; i++ ) {
+				if( i == 0 ) {
+					var nameid = arguments[i] +''
+				} else if( typeof arguments[i] == 'function' ) {
 					var cb = arguments[a]
-				} else if( typeof arguments[a] == 'string' && arguments[a].match( /^[\d]{4}\-[\d]{2}\-[\d]{2} [\d]{2}:[\d]{2}$/ ) ) {
-					vars.when = arguments[a]
+				} else if( typeof arguments[i] == 'string' && arguments[i].match( /^[\d]{4}\-[\d]{2}\-[\d]{2} [\d]{2}:[\d]{2}$/ ) ) {
+					vars.when = arguments[i]
 				} else {
-					vars.sub = arguments[a]
+					vars.sub = arguments[i]
 				}
 			}
 			
@@ -467,7 +467,7 @@ directvps.vps = function( vpsid ) {
 				// name, get all actions
 				directvps.get_actionlist( function( err, actions ) {
 					if( ! err ) {
-						for( var a in actions ) {
+						for( var a=0; a<actions.length; a++ ) {
 							if( actions[a].omschrijving.toLowerCase() == nameid ) {
 								
 								// found the one
@@ -735,7 +735,7 @@ directvps.talk = function( type, path, fields, callback ) {
 			var buf = new Buffer( size )
 			var pos = 0
 			
-			for( var d in data ) {
+			for( var d=0; d<data.length; d++ ) {
 				data[d].copy( buf, pos )
 			}
 			
