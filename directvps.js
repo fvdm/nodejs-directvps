@@ -749,8 +749,8 @@ directvps.talk = function( type, path, fields, callback ) {
 			buf = null
 			
 			// do callback if valid data
-			if( data.match( /^(\{.*\}|\[.*\])$/ ) ) {
-				data = JSON.parse( data )
+			try {
+  			data = JSON.parse( data )
 				
 				if( data[0].error ) {
 					data = data[0]
@@ -758,7 +758,7 @@ directvps.talk = function( type, path, fields, callback ) {
 				}
 				
 				doCallback( null, data )
-			} else {
+			} catch(e) {
 				err = new Error('not json')
 				err.details = data
 				err.responseCode = response.statusCode
