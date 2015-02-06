@@ -120,6 +120,17 @@ module.exports = function (setup, errCallback) {
       });
     });
 
+    // Timeout
+    request.on ('socket', function (socket) {
+      if (typeof set.timeout === 'number') {
+        socket.setTimeout (parseInt (set.timeout));
+        socket.on ('timeout', function () {
+          doCallback (new Error ('request timeout'));
+          request.abort ();
+        });
+      }
+    });
+
     // Error
     request.on ('error', function (e) {
       var err = new Error ('request failed');
