@@ -20,7 +20,7 @@
   "devDependencies":      {},
   "optionalDependencies": {},
   "engines": {
-    "node":               "*"
+    "node":               ">=0.8.0"
   },
   "keywords":             ["directvps", "api", "vps", "servers", "hosting"],
   "license": {
