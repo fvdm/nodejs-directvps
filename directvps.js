@@ -11,765 +11,123 @@ Service URL:  https://directvps.nl
 Service API:  https://directvps.nl/api.pdf
 */
 
-var fs = require('fs'),
-    https = require('https'),
-    querystring = require('querystring')
+var https = require ('https');
+var querystring = require ('querystring');
+var npath = require ('path');
+var fs = require ('fs');
 
-// INIT
-var directvps = {}
+module.exports = function (setup, errCallback) {
+  // Defaults
+  var set = {
+    timeout: 5000,
+    iface: setup.iface || null,
+    key: setup.key || null,
+    cert: setup.cert || null,
+    verify: setup.verify || false
+  };
 
-directvps.settings = {
-  verifyCert: false,  // boolean
-  debugResponse:  null, // function
-  iface: null
-}
-
-// Setup
-directvps.setup = function( vars ) {
-
-  // private key
-  if( vars.privateKeyFile ) {
-    directvps.settings.privateKey = fs.readFileSync( vars.privateKeyFile, 'utf8' )
-  }
-  else if( vars.privateKey ) {
-    directvps.settings.privateKey = vars.privateKey
+  // Read files
+  if (typeof set.key === 'string' && set.key.match (/^\//)) {
+    set.key = fs.readFileSync (set.key, {encoding: 'utf8'});
   }
 
-  // certificate
-  if( vars.certificateFile ) {
-    directvps.settings.certificate = fs.readFileSync( vars.certificateFile, 'utf8' )
-  }
-  else if( vars.certificate ) {
-    directvps.settings.certificate = vars.certificate
+  if (typeof set.cert === 'string' && set.cert.match (/^\//)) {
+    set.cert = fs.readFileSync (set.cert, {encoding: 'utf8'});
   }
 
-  // certificate verification
-  directvps.settings.verifyCert = vars.verifyCert === true ? true : false
-
-  // debugResponse
-  directvps.settings.debugResponse = vars.debugResponse || null
-
-  // outbound interface
-  directvps.settings.iface = vars.iface || null
-}
-
-//////////////////////
-// Direct API calls //
-//////////////////////
-
-// Get account details
-directvps.get_accountdata = function( callback ) {
-  directvps.talk( 'GET', 'get_accountdata', callback )
-}
-
-// Update account details
-directvps.edit_accountdata = function( vars, callback ) {
-  directvps.talk( 'POST', 'edit_accountdata', vars, callback )
-}
-
-// Get products
-directvps.get_productlist = function( callback ) {
-  directvps.talk( 'GET', 'get_productlist', function( err, res ) {
-    var products = null
-    if( ! err ) {
-      var products = {}
-      for( var i=0; i<res.length; i++ ) {
-        var product = res[i]
-        products[ product.productid ] = product
-      }
+  // API
+  return function (method, path, params, callback) {
+    if (typeof params === 'function') {
+      callback = params;
+      params = null;
     }
-    callback( err, products )
-  })
-}
 
-// Get ISOs
-directvps.get_isolist = function( callback ) {
-  directvps.talk( 'GET', 'get_isolist', function( err, res ) {
-    var isos = null
-    if( ! err ) {
-      var isos = {}
-      for( var i=0; i<res.length; i++ ) {
-        var iso = res[i]
-        isos[ iso.isoid ] = iso
+    // prevent multiple callbacks
+    var complete = false;
+    function doCallback (err, data) {
+      if (!complete) {
+        complete = true;
+        callback (err, data || null);
       }
     }
 
-    callback( err, isos )
-  })
-}
-
-// Get boot orders
-directvps.get_bootorderlist = function( callback ) {
-  directvps.talk( 'GET', 'get_bootorderlist', function( err, res ) {
-    var orders = null
-    if( ! err ) {
-      var orders = {}
-      for( var i=0; i<res.length; i++ ) {
-        var order = res[i]
-        orders[ order.bootorderid ] = order
+    // build request
+    var options = {
+      host: 'api.directvps.nl',
+      path: '/1'+ path,
+      method: method,
+      key: set.key,
+      cert: set.cert,
+      rejectUnauthorized: set.verify,
+      secureProtocol: 'TLSv1_method',
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': 'directvps.js (https://github.com/fvdm/nodejs-directvps)'
       }
+    };
+
+    if (set.iface) {
+      options.rejectUnauthorized = set.iface;
     }
 
-    callback( err, orders )
-  })
-}
-
-// Get images
-directvps.get_imagelist = function( callback ) {
-  directvps.talk( 'GET', 'get_imagelist', function( err, res ) {
-    var images = null
-    if( ! err ) {
-      var images = {},
-          versions = {}
-
-      // build images & collect latest versions
-      for( var i=0; i<res.length; i++ ) {
-        var image = res[i]
-
-        image.versie_check = parseInt( image.versie.replace('.', '') )
-        if( !versions[ image.distributie ] || image.versie_check > versions[ image.distributie ] ) {
-          versions[ image.distributie ] = image.versie_check
-        }
-
-        images[ image.imageid ] = image
-      }
-
-      // set latest versions
-      for( var i=0; i<res.length; i++ ) {
-        images[i].laatste_versie = images[i].versie_check == versions[ images[i].distributie ] ? '1' : '0'
-        delete images[i].versie_check
-      }
+    var body = null;
+    if (method === 'POST') {
+      body = 'json='+ escape (JSON.stringify ([params]));
+      options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      options.headers['Content-Length'] = body.length;
     }
 
-    callback( err, images )
-  })
-}
+    var request = https.request (options);
 
-// Get kernels
-directvps.get_kernellist = function( callback ) {
-  directvps.talk( 'GET', 'get_kernellist', function( err, res ) {
-    var kernels = null
-    if( ! err ) {
-      var kernels = {}
-      for( var i=0; i<res.length; i++ ) {
-        var kernel = res[i]
-        kernels[ kernel.kernelid ] = kernel
-      }
-    }
+    // Response
+    request.on ('response', function (response) {
+      var data = [];
+      var size = 0;
 
-    callback( err, kernels )
-  })
-}
+      response.on ('data', function (ch) {
+        data.push (ch);
+        size += ch.length;
+      });
 
-// Get locations
-directvps.get_locationlist = function( callback ) {
-  directvps.talk( 'GET', 'get_locationlist', function( err, res ) {
-    var locations = null
-    if( ! err ) {
-      var locations = {}
-      for( var i=0; i<res.length; i++ ) {
-        var location = res[i]
-        locations[ location.locationid ] = location
-      }
-    }
+      response.on ('close', function () {
+        doCallback (new Error ('request closed'));
+      });
 
-    callback( err, locations )
-  })
-}
+      response.on ('end', function () {
+        data = new Buffer.concat (data, size).toString ('utf8')
+        data = data.replace(/(\u0000)+$/, '').trim ();
 
-// Get actions
-directvps.get_actionlist = function( callback ) {
-  directvps.talk( 'GET', 'get_actionlist', function( err, res ) {
-    var actions = null
-    if( ! err ) {
-      var actions = {}
-      for( var i=0; i<res.length; i++ ) {
-        var action = res[i]
-        actions[ action.actionid ] = action
-      }
-    }
+        try {
+          data = JSON.parse (data);
 
-    callback( err, actions )
-  })
-}
-
-// Get statuses
-directvps.get_statuslist = function( callback ) {
-  directvps.talk( 'GET', 'get_statuslist', function( err, res ) {
-    var statuses = null
-    if( ! err ) {
-      var statuses = {}
-      for( var i=0; i<res.length; i++ ) {
-        statuses[ res[s].statusid ] = res[i]
-      }
-    }
-
-    callback( err, statuses )
-  })
-}
-
-// Get VPS list
-directvps.get_vpslist = function( callback ) {
-  directvps.talk( 'GET', 'get_vpslist', function( err, res ) {
-    var servers = null
-    if( ! err ) {
-      var servers = {}
-      for( var i=0; i<res.length; i++ ) {
-        var server = res[i]
-        servers[ server.vpsid ] = server
-      }
-    }
-
-    callback( err, servers )
-  })
-}
-
-// Get backups
-directvps.get_backuplist = function( vpsid, callback ) {
-  directvps.talk( 'POST', 'get_backuplist', { vpsid: vpsid }, function( err, res ) {
-    var backups = null
-    if( ! err ) {
-      var backups = {}
-      for( var i=0; i<res[0].backup.length; i++ ) {
-        backups[ res[0].backup[i].backupid ] = res[0].backup[i]
-      }
-    }
-
-    callback( err, backups )
-  })
-}
-
-// Update VPS
-directvps.edit_vps = function( set, callback ) {
-  directvps.talk( 'POST', 'edit_vps', set, callback )
-}
-
-// Plan action
-directvps.add_action = function( set, callback ) {
-  directvps.talk( 'POST', 'add_action', set, callback )
-}
-
-// Action status
-directvps.get_actionstatus = function( set, callback ) {
-  directvps.talk( 'POST', 'get_actionstatus', set, callback )
-}
-
-// Get IPv4 address
-directvps.get_ipv4 = function( vpsid, callback ) {
-  directvps.talk( 'POST', 'get_ipv4', { vpsid: vpsid }, function( err, res ) {
-    var ips = null
-    if( ! err ) {
-      var ips = {}
-      for( var i=0; i<res[0].ip.length; i++ ) {
-        var ip = res[0].ip[i]
-        ip.typeLabel = ip.type == '1' ? 'primary' : 'secondary'
-        ips[ ip.ip ] = ip
-      }
-    }
-
-    callback( err, ips )
-  })
-}
-
-// Add (buy) IPv4 address
-directvps.add_ipv4 = function( vpsid, reverse, callback ) {
-  if( typeof reverse === 'function' ) {
-    var callback = reverse
-    var reverse = ''
-  }
-
-  directvps.talk( 'POST', 'add_ipv4', { vpsid: vpsid, reverse: reverse }, callback )
-}
-
-// Delete IPv4 address
-directvps.del_ipv4 = function( vpsid, ipv4, callback ) {
-  directvps.talk( 'POST', 'del_ipv4', { vpsid: vpsid, ipv4: ipv4 }, callback )
-}
-
-// Get IPv6 addresses
-directvps.get_ipv6 = function( vpsid, callback ) {
-  directvps.talk( 'POST', 'get_ipv6', {vpsid: vpsid}, function( err, res ) {
-    var ips = null
-    if( ! err ) {
-      var ips = {}
-      for( var i=0; i<res[0].ip.length; i++ ) {
-        var ip = res[0].ip[i]
-        ip.typeLabel = ip.type == '1' ? 'primary' : 'secondary'
-        ips[ ip.ip ] = ip
-      }
-    }
-
-    callback( err, ips )
-  })
-}
-
-// Add IPv6 address
-directvps.add_ipv6 = function( vpsid, reverse, callback ) {
-  if( typeof reverse === 'function' ) {
-    var callback = reverse
-    var reverse = ''
-  }
-
-  directvps.talk( 'POST', 'add_ipv6', {vpsid: vpsid, reverse: reverse}, callback )
-}
-
-// Delete IPv4 address
-directvps.del_ipv6 = function( vpsid, ipv6, callback ) {
-  directvps.talk( 'POST', 'del_ipv6', {vpsid: vpsid, ipv6: ipv6}, callback )
-}
-
-// Add DirectAdmin license
-directvps.add_da = function( vpsid, callback ) {
-  directvps.talk( 'POST', 'add_da', { vpsid: vpsid }, callback )
-}
-
-// Delete DirectAdmin license
-directvps.del_da = function( vpsid, licenseid, callback ) {
-  directvps.talk( 'POST', 'del_da', { vpsid: vpsid, lid: licenseid }, callback )
-}
-
-// Get IP reverse address
-directvps.get_reverse = function( vpsid, ipv4, callback ) {
-  directvps.talk( 'POST', 'get_reverse', { vpsid: vpsid, ipv4: ipv4 }, callback )
-}
-
-// Edit IP reverse address
-directvps.edit_reverse = function( vpsid, ipv4, reverse, callback ) {
-  directvps.talk( 'POST', 'edit_reverse', { vpsid: vpsid, ipv4: ipv4, reverse: reverse }, callback )
-}
-
-// Create VPS
-directvps.add_vps = function( set, callback ) {
-  directvps.talk( 'POST', 'add_vps', set, callback )
-}
-
-// Traffic
-directvps.get_traffic = function( vpsid, callback ) {
-  directvps.talk( 'POST', 'get_traffic', { vpsid: vpsid }, function( err, res ) {
-    var result = null
-    if( ! err ) {
-      var result = {}
-      if( res[0].error == '0' && res[0].traffic[0].jaar !== undefined ) {
-        for( var i=0; i<res[0].traffic.length; i++ ) {
-          var t = res[0].traffic[i]
-          if( result[ t.jaar ] === undefined ) {
-            result[ t.jaar ] = {}
-          }
-          result[ t.jaar ][ t.maand ] = t
-        }
-      }
-    }
-
-    callback( err, result )
-  })
-}
-
-// Action log
-directvps.get_actionlog = function( vpsid, callback ) {
-  directvps.talk( 'POST', 'get_actionlog', {vpsid: vpsid}, function( err, res ) {
-    var result = null
-    if( ! err ) {
-      var result = {}
-      if( res[0].error == '0' && res[0].actionlog[0].planningid !== undefined ) {
-        for( var i=0; i<res[0].actionlog.length; i++ ) {
-          var action = res[0].actionlog[i]
-          result[ action.planningid ] = action
-        }
-      }
-    }
-
-    callback( err, result )
-  })
-}
-
-
-///////////////
-// Shorthand //
-///////////////
-
-// VPS stuff
-directvps.vps = function( vpsid ) {
-  return {
-    // info
-    details: function( cb ) {
-      directvps.get_vpslist( function( err, list ) {
-        if( ! err ) {
-          cb( null, list[ vpsid ] )
-        } else {
-          cb( err )
-        }
-      })
-    },
-
-    // data traffic
-    traffic: function( cb ) {
-      directvps.get_traffic( vpsid, cb )
-    },
-
-    // Update datails
-    update: function( set, cb ) {
-      set.vpsid = vpsid
-      directvps.edit_vps( set, cb )
-    },
-
-    // Plan action
-    // action( nameid, cb )
-    // action( nameid, subval, cb )
-    // action( nameid, when, cb )
-    // action( nameid, cb, when )
-    // action( nameid, subval, when, cb )
-    action: function() {
-
-      // prepare
-      var vars = { vpsid: vpsid }
-
-      for( var i=0; i<arguments.length; i++ ) {
-        if( i == 0 ) {
-          var nameid = arguments[i] +''
-        } else if( typeof arguments[i] == 'function' ) {
-          var cb = arguments[a]
-        } else if( typeof arguments[i] == 'string' && arguments[i].match( /^[\d]{4}\-[\d]{2}\-[\d]{2} [\d]{2}:[\d]{2}$/ ) ) {
-          vars.when = arguments[i]
-        } else {
-          vars.sub = arguments[i]
-        }
-      }
-
-      // action referenced with name or ID
-      if( nameid.match( /^[\d]+$/ ) ) {
-
-        // ID given
-        vars.actionid = nameid
-        directvps.add_action( vars, cb )
-
-      } else {
-
-        // name, get all actions
-        directvps.get_actionlist( function( err, actions ) {
-          if( ! err ) {
-            for( var a=0; a<actions.length; a++ ) {
-              if( actions[a].omschrijving.toLowerCase() == nameid ) {
-
-                // found the one
-                vars.actionid = actions[a].actionid
-                directvps.add_action( vars, cb )
-                break
-
-              }
-            }
-          } else {
-            cb( err )
-          }
-        })
-
-      }
-
-    },
-
-    // Get action status
-    actionStatus: function( actionRef, cb ) {
-      directvps.get_actionstatus(
-        {
-          vpsid:      vpsid,
-          planningid:   actionRef
-        },
-        function( err, res ) {
-          if( ! err ) {
-            var res = res[0]
-            switch( res.status ) {
-              case '0': res.label = 'planned'; break
-              case '1': res.label = 'running'; break
-              case '2': res.label = 'complete'; break
-            }
+          if (data[0] && data[0].error && data[0].error === '1') {
+            var error = new Error('API error');
+            error.code = response.statusCode;
+            error.text = data[0].errormessage;
+            error.body = data;
+            return doCallback (err);
           }
 
-          cb( err, res )
-
+          doCallback (null, data);
         }
-      )
-    },
-
-    // Get action list
-    actionLog: function( cb ) {
-      directvps.get_actionlog( vpsid, cb )
-    },
-
-    // start
-    start: function( cb ) {
-      directvps.vps( vpsid ).action( 1, cb )
-    },
-
-    // shutdown
-    shutdown: function( force, cb ) {
-      if( force && (force +'').match( /^(true|yes|1)$/i ) ) {
-        directvps.vps( vpsid ).action( 9, cb )
-      } else {
-        directvps.vps( vpsid ).action( 2, cb )
-      }
-    },
-
-    // Reboot
-    reboot: function( force, cb ) {
-      if( force && (force +'').match( /^(true|yes|1)$/i ) ) {
-        directvps.vps( vpsid ).action( 10, cb )
-      } else {
-        directvps.vps( vpsid ).action( 3, cb )
-      }
-    },
-
-    // Restore backup
-    restore: function( backupID, cb ) {
-      directvps.vps( vpsid ).action( 8, backupID, cb )
-    },
-
-    // List backups
-    backups: function( cb ) {
-      directvps.get_backuplist( vpsid, cb )
-    },
-
-    // Upgrade server
-    upgradeProduct: function( productID, cb ) {
-      directvps.vps( vpsid ).action( 13, productID, cb )
-    },
-
-    // Upgrade kernel
-    upgradeKernel: function( kernelID, cb ) {
-      directvps.vps( vpsid ).action( 12, kernelID, cb )
-    },
-
-    // Install DirectAdmin
-    installDirectadmin: function( licenseID, cb ) {
-      directvps.vps( vpsid ).action( 11, licenseID, cb )
-    },
-
-    // Reinstall OS
-    reinstall: function( imageID, cb ) {
-      directvps.vps( vpsid ).action( 6, imageID, cb )
-    },
-
-    // Add DirectAdmin license
-    addDirectadmin: function( cb ) {
-      directvps.add_da( vpsid, cb )
-    },
-
-    // Delete DirectAdmin license
-    deleteDirectadmin: function( licenseID, cb ) {
-      directvps.del_da( vpsid, licenseID, cb )
-    },
-
-    // Add (buy) an IPv4 address
-    addIPv4: function( cb ) {
-      directvps.add_ipv4( vpsid, cb )
-    },
-
-    // Get IPv4 address
-    ipv4: function( ip, cb ) {
-      if( !cb && typeof ip == 'function' ) {
-
-        // list
-        var cb = ip
-        directvps.get_ipv4( vpsid, cb )
-
-      } else if( ip && cb ) {
-
-        // just one
-        directvps.vps( vpsid ).ipv4( ip ).details( cb )
-
-      }
-
-      return {
-        // simple details
-        details: function( reverse, cb ) {
-          if( typeof reverse === 'function' ) {
-            var cb = reverse
-            var reverse = false
-          }
-
-          directvps.get_ipv4( vpsid, function( err, ips ) {
-            if( err ) {
-              cb( err )
-            } else if( reverse ) {
-              directvps.get_reverse( vpsid, ip, function( err, rev ) {
-                var res = null
-                if( ! err ) {
-                  var res = ips[ ip ]
-                  res.reverse = rev[0].reverse
-                }
-
-                cb( err, res )
-              })
-            } else {
-              cb( null, ips[ ip ] )
-            }
-          })
-        },
-
-        // get or set reverse
-        reverse: function( name, cb ) {
-          if( cb === undefined ) {
-
-            // get
-            var cb = name
-            directvps.get_reverse( vpsid, ip, cb )
-
-          } else {
-
-            // set
-            directvps.edit_reverse( vpsid, ip, reverse, cb )
-
-          }
-        },
-
-        // delete an IPv4 address from server
-        delete: function( cb ) {
-          directvps.del_ipv4( vpsid, ip, cb )
+        catch (e) {
+          var err = new Error ('not json');
+          err.body = data;
+          err.code = response.statusCode;
+          err.headers = response.headers
+          doCallback (err);
         }
-      }
-    }
-  }
+      });
+    });
+
+    // Error
+    request.on ('error', function (e) {
+      var err = new Error ('request failed');
+      err.error = e;
+      doCallback (err);
+    });
+
+    // End
+    request.end (body);
+  };
 }
-
-
-//////////
-// CORE //
-//////////
-
-function doDebug( req, body, res, data ) {
-  return {
-    request: {
-      method: req.method,
-      uri: 'https://'+ req.host + req.path,
-      headers: req.headers || {},
-      body: body || null,
-      bodyDecoded: unescape(body) || body || null
-    },
-    response: {
-      headers: res.headers || {},
-      body: data || null
-    }
-  }
-}
-
-// API communication
-directvps.talk = function( type, path, fields, callback ) {
-
-  if( typeof fields === 'function' ) {
-    var callback = fields
-    var fields = {}
-  }
-
-  // prevent multiple callbacks
-  var complete = false
-  function doCallback( err, res ) {
-    if( ! complete ) {
-      complete = true
-      callback( err, res )
-    }
-  }
-
-  // build request
-  var headers = {
-    'Accept': 'application/json',
-    'User-Agent': 'directvps.js (https://github.com/fvdm/nodejs-directvps)'
-  }
-
-  if( type == 'POST' ) {
-    var query = []
-    query.push( fields )
-    var querystr = 'json='+ escape( JSON.stringify( query ) )
-
-    headers['Content-Type']   = 'application/x-www-form-urlencoded'
-    headers['Content-Length'] = querystr.length
-  }
-
-  var options = {
-    host:     'api.directvps.nl',
-    port:     443,
-    path:     '/1/'+ path,
-    method:     type,
-    headers:    headers,
-    localAddress: directvps.settings.iface,
-    key:      directvps.settings.privateKey,
-    cert:     directvps.settings.certificate,
-    agent:      false,
-    rejectUnauthorized: directvps.settings.verifyCert
-  }
-
-  var request = https.request( options )
-
-  // response
-  request.on( 'response', function( response ) {
-    var data = []
-    var size = 0
-
-    response.on( 'data', function( chunk ) {
-      data.push( chunk )
-      size += chunk.length
-    })
-
-    response.on( 'close', function() {
-      doCallback( new Error('connection closed') )
-    })
-
-    response.on( 'end', function() {
-      var buf = new Buffer( size )
-      var pos = 0
-
-      for( var d=0; d<data.length; d++ ) {
-        data[d].copy( buf, pos )
-      }
-
-      data = buf.toString('utf8')
-      data = data.replace( /(\u0000)+$/, '', data )
-      data = data.trim()
-      if( data.substr(0,1) == '{' && data.substr(-1,1) == ']' ) {
-        data = '['+ data
-      }
-
-      buf = null
-
-      // do callback if valid data
-      try {
-        data = JSON.parse( data )
-
-        if( data[0].error ) {
-          data = data[0]
-          data.error = data.error == '1' ? true : false
-        }
-
-        doCallback( null, data )
-      } catch(e) {
-        err = new Error('not json')
-        err.details = data
-        err.responseCode = response.statusCode
-        err.responseHeaders = response.headers
-        err.responseBody = data
-        doCallback( err )
-      }
-
-      // debugResponse
-      if( typeof directvps.settings.debugResponse === 'function' ) {
-        directvps.settings.debugResponse( doDebug( options, querystr, response, data ) )
-      }
-    })
-  })
-
-  // error
-  request.on( 'error', function( error ) {
-    err = new Error('request failed')
-    err.details = error
-    err.request = options
-    err.requestData = fields
-    doCallback( err )
-  })
-
-  // post and close
-  if( type == 'POST' ) {
-    request.write( querystr )
-  }
-
-  request.end()
-}
-
-// Ready
-module.exports = directvps
