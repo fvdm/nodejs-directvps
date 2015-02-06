@@ -6,7 +6,6 @@
   },
   "name":                 "directvps",
   "description":          "Manage your DirectVPS servers and account using their API.",
-  "homepage":             "https://frankl.in/code/directvps-api-for-node-js",
   "version":              "0.5.0",
   "repository": {
     "type":               "git",
