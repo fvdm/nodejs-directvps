@@ -1,194 +1,99 @@
-nodejs-directvps
-================
+directvps
+=========
 
-Access the [DirectVPS](https://www.directvps.nl/) API from your Node.js code
+Access the [DirectVPS](https://www.directvps.nl/) API with node.js
+
+[![Build Status](https://travis-ci.org/fvdm/nodejs-directvps.svg?branch=master)](https://travis-ci.org/fvdm/nodejs-directvps)
 
 
-Table of contents
------------------
+Example
+-------
 
-- [Installation](#installation)
-- [Setup & settings](#setup)
-- [Usage](#usage)
-- [Methods](#methods)
-- [Unlicense](#unlicense)
+```js
+var directvps = require ('directvps') ({
+  key: '/path/to/privatekey.pem',
+  cert: '/path/to/certificate.pem'
+});
+
+// List servers in account
+directvps ('GET', '/get_vpslist', function (err, list) {
+  if (err) { return console.log (err); }
+
+  list.forEach (function (vps) {
+    console.log ('VPS %s allows %sGB traffic', vps.vpsid, vps.traffic);
+  });
+});
+```
 
 
 Installation
 ------------
 
+Stable: `npm install directvps`
 
-### From npm
-
-To install the module from the [npm repository](https://npmjs.org/package/directvps) run this:
-
-	npm install directvps
-	
-
-And then link inside your code with:
-
-```js
-var directvps = require('directvps')
-```
+Develop: `npm install fvdm/nodejs-directvps#develop`
 
 
-### From source
-
-Install directly from Github source:
-
-	git clone https://github.com/fvdm/nodejs-directvps.git
-
-
-And load in your code:
-
-```js
-var directvps = require('/path/to/nodejs-directvps')
-```
-
-
-Setup
+Setup ( settings, [errCallback] )
 -----
 
-In order to use the API you need to have an API access private-key and certificate. Refer to the documentation for details. After loading the module with *require()* set the key and certificate with **setup()**.
+In order to use the API you need to have a private-key and certificate.
+Refer to the documentation for details.
 
 
-### Settings
+Param       | Type     | Required | Description
+------------|----------|----------|--------------------------------------------
+settings    | object   | yes      | see [Settings](#settings) below
+errCallback | function | no       | function to catch key/cert file read errors
 
 
-    Name              Type      Description                          Example
-    ---------------   -------   ----------------------------------   ---------
-    privateKey        string    The private-key in plain text.
-    certificate       string    The certificate in plain text.
-    privateKeyFile    string    Path to the private-key file.        ~/api.key
-    certificateFile   string    Path to certificate file.            ~/api.crt
-    verifyCert        boolean   Validate server certificate          true
-                                agains trusted CA's.
-    debugResponse     function  Receive communication details.
+#### Settings
 
+Name    | Type    | Required | Default | Description                     
+--------|---------|----------|---------|--------------------------------------
+key     | string  | yes      | null    | The private-key text or absolute path
+cert    | string  | yes      | null    | The certificate text or absolute path
+verify  | boolean | no       | false   | Validate server certificate
+timeout | integer | no       | 5000    | Request wait timeout in ms
 
-### Load from files
-
-This is the simple way, if you have access to a filesystem.
 
 ```js
-directvps.setup({
-	privateKeyFile:		'/path/to/private.key',
-	certificateFile:	'/path/to/shared-certificate.crt'
-})
+var directvps = require ('directvps') ({
+  key: '/path/to/privatekey.pem',
+  cert: '/path/to/certificate.pem',
+  timeout: 10000
+});
 ```
 
 
-### Load directly
-
-Or you can load the private-key and certificate directly, ie. from a database.
-
-```js
-directvps.setup({
-	privateKey:			'-----BEGIN RSA PRIVATE KEY-----',
-	certificate:		'-----BEGIN CERTIFICATE-----'
-})
-```
-
-Usage
+Usage ( method, path, [params], callback )
 -----
 
-
-This module is event based, meaning all functions require a **callback** function parameter to process the result. All methods from the API are implemented directly, but for VPS specific methods a shorthand is also available. The two samples below highlight both methods. 
-
-**The examples below are based on the NPM install. If you rather directly use the source file use the *require()* replacement above.**
+The module is a _function_ for the [Setup](#setup) which returns another _function_ for all API calls.
 
 
-### Direct method
+#### Arguments
 
-In this example the API method *[get_vpslist](#getvpslist)* is called, the *callback function* loops through the resulting *servers* object and for each server it writes a log to the console.
+name     | type     | required | description
+---------|----------|----------|---------------------------------------------------
+method   | string   | yes      | `GET` or `POST`
+path     | string   | yes      | i.e. `/get_vpslist`
+params   | object   | no       | i.e. `{vpsid: '123'}`
+callback | function | yes      | function to receive result: `function (err, data)`
+
 
 ```js
-var directvps = require('directvps')
+var input {
+  vpsid: '123',
+  ipv6: '2a02:2308::1b:1:127',
+  reverse: 'myhostname.net'
+};
 
-directvps.get_vpslist( function( servers ) {
-	for( var s in servers ) {
-		var vps = servers[s]
-		console.log( 'VPS '+ vps.vpsid +' allows '+ vps.traffic 'GB traffic' )
-	}
-})
+directvps ('POST', '/add_ipv6', input, processResult);
 ```
 
-
-### Shorthand method
-
-In this example the **[vps](#vps)** shorthand method is called to get the functions for server *123*. Then its sub-function **[.details](#vpsdetails)** is called to get the server's information. In the background the script requests all servers with **[get_vpslist](#getvpslist)**, loops through them until *vpsid* *123* is found and then send the result to the **callback** *function*. In this case, to write a line to the console.
-
-```js
-var directvps = require('directvps')
-
-// one line
-directvps.vps(123).details( function( details ) {
-	console.log( 'VPS '+ vps.vpsid +' allows '+ vps.traffic 'GB traffic' )
-})
-
-// or via a variable
-var vps = directvps.vps(123)
-vps.details( function( details ) {
-	console.log( 'VPS '+ vps.vpsid +' allows '+ vps.traffic 'GB traffic' )
-})
-```
-
-
-### Extended example
-
-
-Shutdown all servers from one client, these may be identified with 'client: 123' in their tag.
-
-```js
-// First get the list of all servers
-directvps.get_vpslist( function( servers ) {
-	
-	// walk through each of them
-	for( var vpsid in servers ) {
-		
-		// request server specific functions
-		var vps = directvps.vps( vpsid )
-		
-		// and its information
-		vps.details = servers[ vpsid ]
-		
-		// do the matching
-		if( vps.details.tag.match( /^client: 123\, / ) ) {
-			
-			// found one, shutdown gracefully
-			vps.shutdown( function( plan ) {
-				
-				// report status to console
-				var status = 'Server '+ vpsid +' shutdown '
-				
-				if( plan.error == '0' ) {
-					status += 'planned: ID '+ plan.planningid
-				} else {
-					status += 'failed: '+ plan.errormessage
-				}
-				
-				console.log( status )
-				
-			})
-			
-		}
-		
-	}
-	
-})
-```
-
-
-Methods
+License
 -------
-
-The methods are described in the wiki at Github:
-
-<https://github.com/fvdm/nodejs-directvps/wiki>
-
-
-Unlicense
----------
 
 This is free and unencumbered software released into the public domain.
 
@@ -214,3 +119,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <http://unlicense.org>
+
+
+Author
+------
+
+Franklin van de Meent
+| [Website](https://frankl.in)
+| [Github](https://github.com/fvdm)
