@@ -28,7 +28,7 @@ var testData = {
   ipv6: process.env.IPV6 || null
 }
 
-var app = require ('./') (acc);
+var app;
 
 // handle exits
 var errors = 0;
@@ -96,6 +96,29 @@ function doTest (err, label, tests) {
 }
 
 
+if (process.env.CERTU && process.env.KEYU) {
+  get (process.env.KEYU, function (err, data) {
+    if (err) { return console.log ('http failed'); }
+    acc.key = data;
+    if (acc.cert && next === 0) {
+      app = require ('./') (acc);
+      queue[0]();
+    }
+  });
+  get (process.env.CERTU, function (err, data) {
+    if (err) { return console.log ('http failed'); }
+    acc.cert = data;
+    if (acc.key && next === 0) {
+      app = require ('./') (acc);
+      queue[0]();
+    }
+  });
+} else {
+  var app = require ('./') (acc);
+  queue[0]();
+}
+
+
 // First check API access
 queue.push (function () {
   app ('GET', '/get_statuslist', function (err, data) {
@@ -144,5 +167,27 @@ queue.push (function () {
 })
 
 
-// Start the tests
-queue[0]();
+// HTTP GET
+function get (url, cb) {
+  var proto = url.match (/^https:/) ? 'https' : 'http';
+  require (proto).get (url, function (response) {
+    var data = [];
+    var size = 0;
+    response.on ('data', function (ch) {
+      data.push (ch);
+      size += ch.length;
+    });
+    response.on ('end', function () {
+      data = new Buffer.concat (data, size).toString ('utf8').trim ();
+      if (data === '') {
+        return cb (new Error('Test: http empty'));
+      }
+      if (response.statusCode >= 300) {
+        var err = new Error('Test: http error');
+        err.code = response.statusCode;
+        return cb (err);
+      }
+      cb (null, data);
+    });
+  });
+}
