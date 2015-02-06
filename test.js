@@ -96,29 +96,6 @@ function doTest (err, label, tests) {
 }
 
 
-if (process.env.CERTU && process.env.KEYU) {
-  get (process.env.KEYU, function (err, data) {
-    if (err) { return console.log ('http failed'); }
-    acc.key = data;
-    if (acc.cert && next === 0) {
-      app = require ('./') (acc);
-      queue[0]();
-    }
-  });
-  get (process.env.CERTU, function (err, data) {
-    if (err) { return console.log ('http failed'); }
-    acc.cert = data;
-    if (acc.key && next === 0) {
-      app = require ('./') (acc);
-      queue[0]();
-    }
-  });
-} else {
-  var app = require ('./') (acc);
-  queue[0]();
-}
-
-
 // First check API access
 queue.push (function () {
   app ('GET', '/get_statuslist', function (err, data) {
@@ -165,6 +142,30 @@ queue.push (function () {
     ]);
   });
 })
+
+
+// Procedural async data loading
+if (process.env.CERTU && process.env.KEYU) {
+  get (process.env.KEYU, function (err, data) {
+    if (err) { return console.log ('http failed'); }
+    acc.key = data;
+    if (acc.cert && next === 0) {
+      app = require ('./') (acc);
+      queue[0]();
+    }
+  });
+  get (process.env.CERTU, function (err, data) {
+    if (err) { return console.log ('http failed'); }
+    acc.cert = data;
+    if (acc.key && next === 0) {
+      app = require ('./') (acc);
+      queue[0]();
+    }
+  });
+} else {
+  var app = require ('./') (acc);
+  queue[0]();
+}
 
 
 // HTTP GET
