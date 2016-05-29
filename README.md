@@ -3,6 +3,7 @@ directvps
 
 Access the [DirectVPS](https://www.directvps.nl/) API with node.js
 
+[![npm](https://img.shields.io/npm/v/bolcom.svg?maxAge=3600)](https://github.com/fvdm/nodejs-bolcom/blob/master/CHANGELOG.md)
 [![Build Status](https://travis-ci.org/fvdm/nodejs-directvps.svg?branch=master)](https://travis-ci.org/fvdm/nodejs-directvps)
 [![Dependency Status](https://gemnasium.com/badges/github.com/fvdm/nodejs-directvps.svg)](https://gemnasium.com/github.com/fvdm/nodejs-directvps#runtime-dependencies)
 
